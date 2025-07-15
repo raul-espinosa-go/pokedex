@@ -21,6 +21,8 @@
   width: 17px;
 }
 .pokedex-scrollbar::-webkit-scrollbar-track {
+  margin-top: 20px;
+  margin-bottom: 20px;
   border-radius: 0px;
   background: linear-gradient(to bottom, #5882A5, #1B3E64);
   border: 2px solid #9EC1F5;
