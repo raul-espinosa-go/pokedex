@@ -1,16 +1,18 @@
 import pokemonList from "@/data/pokedex.json";
 import PokemonCard from "./PokemonCard.jsx";
+import "./Pokedex.css";
 
-function PokedexList({className}) {
+function PokedexList({ className }) {
   return (
-    <>
-      <div className={`space-y-2 h-screen my-2 mr-4 ${className}`}>
+    <div className={`mr-2 ${className} flex flex-col`}>
+      <div className="overflow-y-auto max-h-[calc(100vh-80px)] pokedex-scrollbar pr-2">
         {pokemonList.map((pokemon) => (
           <PokemonCard key={pokemon.id} pokemon={pokemon} />
         ))}
       </div>
-    </>
+    </div>
   );
 }
+
 
 export default PokedexList;

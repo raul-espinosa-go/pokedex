@@ -1,16 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=Oswald:wght@200..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=Oswald:wght@200..700&display=swap");
 @import "tailwindcss";
 
+:root {
+  font-family: var(--font-oswald), sans-serif;
+}
+
 @theme {
-  --color-vanilla: #fceab8;
-  --color-peach-yellow: #f1ddaa;
-  --color-cornflower-blue: #6188fc;
-  --color-sandy-brown: #F49545;
-  --color-poppy: #DA4443;
-  --color-fire-brick: #B53732;
+  --color-pokemon-card-background: #fceab8;
+  --color-pokeball-background: #f1ddaa;
+  --color--pokeball-background-hovered: #e68731;
+  /* --color-cornflower-blue: #6188fc; */
+  --color-pokemon-card-hovered: #f49545;
+  --color-pokemon-card-label: #da4443;
+  --color-pokemon-card-label-shadow: #b53732;
+  --color-header-yellow: #fffe38;
+  --color-header-gold: #ffe77d;
+  --color-header-shadow: #38372f;
 
-
-  --shadow-hard: 0px 4px 0px rgba(0, 0, 0, 1);
+  --shadow-hard: 0px 6px 0px;
+  --shadow-pokeball: 0px 0px 3px 2px inset;
+  --shadow-pokemon-card: 0px 0px 5px 6px inset;
 
   --font-cabin-condensed: "Cabin Condensed", sans-serif;
   --font-oswald: "Oswald", sans-serif;
