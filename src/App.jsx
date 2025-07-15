@@ -8,7 +8,7 @@ function App() {
       <Header />
       <div className="flex flex-row flex-1 overflow-hidden">
         <PokemonDetails />
-        <PokedexList />
+        <PokedexList className="w-2/3" />
       </div>
     </div>
   );

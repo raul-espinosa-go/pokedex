@@ -1,9 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=Oswald:wght@200..700&display=swap');
 @import "tailwindcss";
 
 @theme {
-    --color-vanilla: #FCEAB8;
-    --color-peach-yellow: #F1DDAA;
-    --color-cornflower-blue: #6188FC;
+  --color-vanilla: #fceab8;
+  --color-peach-yellow: #f1ddaa;
+  --color-cornflower-blue: #6188fc;
+  --color-sandy-brown: #F49545;
+  --color-poppy: #DA4443;
+  --color-fire-brick: #B53732;
 
-    --shadow-hard: 0px 4px 0px rgba(0, 0, 0, 1);
+
+  --shadow-hard: 0px 4px 0px rgba(0, 0, 0, 1);
+
+  --font-cabin-condensed: "Cabin Condensed", sans-serif;
+  --font-oswald: "Oswald", sans-serif;
 }
