@@ -2,6 +2,7 @@ import PokedexList from "@/components/PokedexList";
 import Header from "./components/Header";
 import PokemonDetails from "./components/PokemonDetails";
 import "./App.css"; 
+
 function App() {
   return (
     <div className="flex flex-col h-screen overflow-hidden background">
