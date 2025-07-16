@@ -12,6 +12,14 @@ const usePokedexStore = create((set) => ({
   pokemonListFilteredByType: [],
   setPokemonListFilteredByType: (list) =>
     set({ pokemonListFilteredByType: list }),
+  pokemonCount: 30,
+  setPokemonCount: (countOrUpdater) =>
+    set((state) => ({
+      pokemonCount:
+        typeof countOrUpdater === "function"
+          ? countOrUpdater(state.pokemonCount)
+          : countOrUpdater,
+    })),
 }));
 
 export default usePokedexStore;

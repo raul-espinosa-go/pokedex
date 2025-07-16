@@ -50,8 +50,8 @@ function usePokemon() {
         setPokemonData(pokemon);
         setSpeciesData(species);
 
-        console.log("Pokemon Data:", pokemon);
-        console.log("Species Data:", species);
+        // console.log("Pokemon Data:", pokemon);
+        // console.log("Species Data:", species);
       } catch (err) {
         setError(err);
       } finally {
