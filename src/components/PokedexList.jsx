@@ -1,18 +1,26 @@
 import pokemonList from "@/data/pokedex.json";
 import PokemonCard from "./PokemonCard.jsx";
 import "./Pokedex.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import usePokedexStore from "@/store/usePokedexStore.js";
 
 const PAGE_SIZE = 30;
 
 function PokedexList({ className }) {
-  // const [pokemonCount, setPokemonCount] = useState(PAGE_SIZE);
   const pokemonCount = usePokedexStore((state) => state.pokemonCount);
   const setPokemonCount = usePokedexStore((state) => state.setPokemonCount);
+  const filter = usePokedexStore((state) => state.filter);
   const sentinelRef = useRef();
 
- useEffect(() => {
+  const filteredPokemon = pokemonList.filter((pokemon) => {
+    const search = filter?.toLowerCase().trim();
+    return (
+      pokemon.name.toLowerCase().includes(search) ||
+      pokemon.id.toString().includes(search)
+    );
+  });
+
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -36,7 +44,7 @@ function PokedexList({ className }) {
     };
   }, [setPokemonCount]);
 
-  const visiblePokemon = pokemonList.slice(0, pokemonCount);
+  const visiblePokemon = filteredPokemon.slice(0, pokemonCount);
 
   return (
     <div className={`mr-8 ${className} flex flex-col `}>

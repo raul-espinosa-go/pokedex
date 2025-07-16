@@ -3,7 +3,7 @@ import "./Pokedex.css";
 import ArrowRight from "./icons/ArrowRight.jsx";
 
 import usePokedexStore from "@/store/usePokedexStore.js";
-import { formatNumberTo4Digits } from "@/utils/textFormatter.js";
+import { formatNumberTo4Digits } from "@/utils/utils.js";
 
 
 function PokemonCard({ pokemon }) {
