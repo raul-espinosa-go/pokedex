@@ -16,8 +16,13 @@
   --color-header-yellow: #fffe38;
   --color-header-gold: #ffe77d;
   --color-header-shadow: #38372f;
+  --color-header-counter: #78640E;
+  --color-footer-background: #689AD5;
+  --color-console-button: #6D6A60;
+  --color-filter-background: #DFBF4E;
 
-  --shadow-hard: 0px 6px 0px;
+  --shadow-hard-long: 0px 6px 0px;
+  --shadow-hard-short: 0px 4px 0px;
   --shadow-pokeball: 0px 0px 3px 2px inset;
   --shadow-pokemon-card: 0px 0px 5px 6px inset;
 
