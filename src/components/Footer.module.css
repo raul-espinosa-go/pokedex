@@ -1,0 +1,9 @@
+.footer-background {
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-white) 60%,
+    var(--color-gray-100) 50%
+  );
+  background-size: 100% 10px;
+  background-repeat: repeat;
+}
