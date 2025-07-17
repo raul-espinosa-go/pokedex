@@ -14,9 +14,9 @@ function App() {
 
   return (
     <main
-      className={`${styles["main-background"]} flex flex-col h-dvh overflow-hidden`}
+      className={`${styles["main-background"]} flex flex-col justify-between h-dvh overflow-hidden`}
     >
-      
+      <Header className="w-full fixed top-0" />
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Pokedex />} />
         {/* Add more routes as needed */}
