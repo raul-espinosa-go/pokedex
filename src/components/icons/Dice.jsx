@@ -1,4 +1,4 @@
-export function ArrowRight(props) {
+export function Dice(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -7,16 +7,18 @@ export function ArrowRight(props) {
       viewBox="0 0 24 24"
       {...props}
     >
-      <path
+      <g
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
-        d="M3 5v14m18-7H7m8 6l6-6l-6-6"
-      />
+      >
+        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+        <path d="M16 8h.01M16 12h.01M16 16h.01M8 8h.01M8 12h.01M8 16h.01" />
+      </g>
     </svg>
   );
 }
 
-export default ArrowRight;
+export default Dice;

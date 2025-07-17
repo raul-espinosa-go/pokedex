@@ -12,7 +12,6 @@ function PokemonCard({ pokemon }) {
     (state) => state.setPokemonSelected
   );
 
-  const isSelected = pokemonSelected === pokemon.id;
   const generation = checkPokemonGeneration(pokemon.id);
 
   let clickStartX = 0;
@@ -29,12 +28,12 @@ function PokemonCard({ pokemon }) {
 
   return (
     <button
-      className={`${styles["card-background"]} ${styles["effect3D"]} h-full flex flex-row items-center justify-between md:py-2`}
+      className={`${styles["card-background"]} ${styles["effect3D"]} flex flex-row items-center justify-between md:py-2`}
       onMouseDown={handleMouseDown}
       onClick={handleClick}
     >
       <div
-        className={`border-y-4 md:border-y-4 ${styles[generation]} overflow-y-hidden px-1 md:px-1 h-full flex flex-col items-center justify-around gap-2 truncate`}
+        className={`border-y-4 md:border-y-4 ${styles[generation]} overflow-y-hidden p-1 md:p-1 h-44 flex flex-col items-center justify-between gap-2 truncate`}
       >
         <div className="flex flex-col items-center justify-around gap-2 truncate">
           <img

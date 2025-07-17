@@ -3,6 +3,8 @@ import pokemonList from "@/data/pokedex.json";
 import PokemonCard from "@/components/PokemonCard.jsx";
 import styles from "./Pokedex.module.css";
 import usePokedexStore from "@/store/usePokedexStore.js";
+import ArrowLeft from "../components/icons/ArrowLeft";
+import ArrowRight from "../components/icons/ArrowRight";
 
 const PAGE_SIZE = 30;
 

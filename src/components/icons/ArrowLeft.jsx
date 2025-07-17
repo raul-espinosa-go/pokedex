@@ -1,4 +1,4 @@
-export function ArrowRight(props) {
+export function ArrowLeft(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,10 +13,10 @@ export function ArrowRight(props) {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
-        d="M3 5v14m18-7H7m8 6l6-6l-6-6"
+        d="m9 6l-6 6l6 6m-6-6h14m4 7V5"
       />
     </svg>
   );
 }
 
-export default ArrowRight;
+export default ArrowLeft;

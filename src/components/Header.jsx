@@ -4,6 +4,7 @@ import { debounce } from "@/utils.js";
 import { useEffect, useMemo, useState } from "react";
 import AlignLeft from "./icons/AlignLeft.jsx";
 import X from "./icons/X.jsx";
+import Dice from "./icons/Dice.jsx";
 import styles from "./Layout.module.css";
 
 function Header({ className }) {
@@ -25,43 +26,10 @@ function Header({ className }) {
     []
   );
 
-  // return(
-
-  //       <div className="relative w-full sm:w-[28rem]">
-  //         <label htmlFor="filter_input" className="sr-only">
-  //           Filter by name or No.
-  //         </label>
-  //         <input
-  //           type="text"
-  //           id="filter_input"
-  //           placeholder="Filter by name or No."
-  //           className="w-full bg-filter-background text-gray-200 font-normal text-4xl rounded-full py-4 px-6 pr-16 shadow-pokeball shadow-black/20 hover:shadow-black/40 transition-all ease-in-out"
-  //           value={inputValue}
-  //           onChange={(e) => {
-  //             const val = e.target.value;
-  //             setInputValue(val);
-  //             debouncedUpdateFilter(val);
-  //           }}
-  //           autoComplete="off"
-  //           autoCorrect="off"
-  //           spellCheck="false"
-  //         />
-
-  //         {filter && (
-  //           <button
-  //             type="button"
-  //             onClick={() => {
-  //               setInputValue("");
-  //               setFilter("");
-  //             }}
-  //             className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition cursor-pointer"
-  //             aria-label="Clear filter"
-  //           >
-  //             <X className="text-2xl text-white" />
-  //           </button>
-  //         )}
-  //       </div>
-  // )
+  const random = () => {
+    const randomId = Math.floor(Math.random() * TOTAL_POKEMON) + 1;
+    setFilter(randomId.toString());
+  }
 
   return (
     <header
@@ -78,42 +46,47 @@ function Header({ className }) {
             {pokemonCount} / {TOTAL_POKEMON}
           </p>
         </div>
-        <div className="relative chip">
-          <label htmlFor="filter_input" className="sr-only">
-            Filter by name or No.
-          </label>
-          <input
-            type="text"
-            id="filter_input"
-            placeholder="Filter by name or No."
-            className="focus:outline-0 active:outline-0 "
-            value={inputValue}
-            onChange={(e) => {
-              const val = e.target.value;
-              setInputValue(val);
-              debouncedUpdateFilter(val);
-            }}
-            autoComplete="off"
-            autoCorrect="off"
-            spellCheck="false"
-          />
-          {filter && (
-            <button
-              type="button"
-              onClick={() => {
-                setInputValue("");
-                setFilter("");
+        <div className="flex flex-row items-center gap-2">
+          <div className="relative chip">
+            <label htmlFor="filter_input" className="sr-only">
+              Filter by name or No.
+            </label>
+            <input
+              type="text"
+              id="filter_input"
+              placeholder="Filter by name or No."
+              className="focus:outline-0 active:outline-0 px-2 md:px-2"
+              value={inputValue}
+              onChange={(e) => {
+                const val = e.target.value;
+                setInputValue(val);
+                debouncedUpdateFilter(val);
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition cursor-pointer"
-              aria-label="Clear filter"
-            >
-              <X className="text-base md:text-base text-white" />
-            </button>
-          )}
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck="false"
+            />
+            {filter && (
+              <button
+                type="button"
+                onClick={() => {
+                  setInputValue("");
+                  setFilter("");
+                }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition cursor-pointer"
+                aria-label="Clear filter"
+              >
+                <X className="text-base md:text-base text-white" />
+              </button>
+            )}
+          </div>
+          <button className="chip h-auto p-1" onClick={random}>
+            <Dice className="w-6 sm:w-4 md:w-4 lg:w-6" />
+          </button>
         </div>
         <div className="chip">
           <AlignLeft className="w-6 sm:w-4 md:w-4 lg:w-6" />
-          <p className="text-base md:text-base">Filter by name or No.</p>
+          <p className="text-base md:text-base">Numerical order</p>
         </div>
       </div>
     </header>
