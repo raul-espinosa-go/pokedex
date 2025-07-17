@@ -214,32 +214,37 @@ function PokedexList({ className }) {
   const visiblePokemon = filteredPokemon.slice(0, pokemonCount);
 
   return (
-    <div
-      className={`${className} overflow-hidden flex flex-col items-center justify-center md:pt-12 md:pb-16`}
-    >
+    <div className={`${className} overflow-hidden h-full flex flex-col justify-center`}>
       <div
-        ref={scrollContainerRef}
-        className="flex flex-row h-full gap-3 w-full overflow-x-auto px-8"
-      >
-        {visiblePokemon.map((pokemon) => (
-          <PokemonCard key={pokemon.id} pokemon={pokemon} />
-        ))}
-        {pokemonCount < pokemonList.length && (
-          <div ref={sentinelRef} className="w-12 h-full pointer-events-none" />
-        )}
-      </div>
-      <div
-        className={`bg-white w-full h-6 border-y-2 ${styles["bottom-shadow"]}`}
-      />
-      <div
-        ref={scrollbarTrackRef}
-        className="relative h-2 bg-white/30 mt-4 w-2/3 rounded-full"
+        className={`flex flex-col items-center justify-center`}
       >
         <div
-          ref={scrollbarThumbRef}
-          className="absolute top-0 h-2 bg-white rounded-full cursor-pointer"
-          style={{ left: 0, width: "80px" }} // se sobreescribirá dinámicamente
-        ></div>
+          ref={scrollContainerRef}
+          className="flex flex-row h-full gap-3 w-full overflow-x-auto px-8"
+        >
+          {visiblePokemon.map((pokemon) => (
+            <PokemonCard key={pokemon.id} pokemon={pokemon} />
+          ))}
+          {pokemonCount < pokemonList.length && (
+            <div
+              ref={sentinelRef}
+              className="w-12 h-full pointer-events-none"
+            />
+          )}
+        </div>
+        <div
+          className={`bg-white w-full h-6 border-y-2 ${styles["bottom-shadow"]}`}
+        />
+        <div
+          ref={scrollbarTrackRef}
+          className="relative h-2 bg-white/30 mt-4 w-2/3 rounded-full"
+        >
+          <div
+            ref={scrollbarThumbRef}
+            className="absolute top-0 h-2 bg-white rounded-full cursor-pointer"
+            style={{ left: 0, width: "80px" }} // se sobreescribirá dinámicamente
+          ></div>
+        </div>
       </div>
     </div>
   );
