@@ -11,6 +11,7 @@ function PokedexList({ className }) {
   const setPokemonCount = usePokedexStore((state) => state.setPokemonCount);
   const filter = usePokedexStore((state) => state.filter);
   const sentinelRef = useRef();
+  const scrollContainerRef = useRef();
 
   const filteredPokemon = pokemonList.filter((pokemon) => {
     const search = filter?.toLowerCase().trim();
@@ -30,8 +31,8 @@ function PokedexList({ className }) {
         }
       },
       {
-        root: null,
-        rootMargin: "0px 0px 300px 0px", // Carga anticipada
+        root: scrollContainerRef.current,
+        rootMargin: "0px 300px 0px 0px",
         threshold: 0,
       }
     );
@@ -47,14 +48,16 @@ function PokedexList({ className }) {
   const visiblePokemon = filteredPokemon.slice(0, pokemonCount);
 
   return (
-    <div className={`mr-8 ${className} flex flex-col `}>
-      <div className="overflow-y-auto overflow-x-hidden pokedex-scrollbar pr-4 pt-28 pb-18">
+    <div className={`${className} overflow-hidden`}>
+      <div
+        ref={scrollContainerRef}
+        className="flex flex-row gap-2 h-full w-full overflow-x-auto"
+      >
         {visiblePokemon.map((pokemon) => (
           <PokemonCard key={pokemon.id} pokemon={pokemon} />
         ))}
-
         {pokemonCount < pokemonList.length && (
-          <div ref={sentinelRef} className="h-12 pointer-events-none" />
+          <div ref={sentinelRef} className="w-12 h-full pointer-events-none" />
         )}
       </div>
     </div>

@@ -1,4 +1,4 @@
-.card-radius {
+/* .card-radius {
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
   border-top-right-radius: 8px;
@@ -9,11 +9,6 @@
   filter: drop-shadow(0 0 0 black) drop-shadow(0 0 1px black);
 }
 
-/* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
-/** {
-  scrollbar-width: thin;
-  scrollbar-color: #DA4443 #1D6587;
-}*/
 
 .pokedex-scrollbar::-webkit-scrollbar {
   height: 17px;
@@ -58,4 +53,4 @@
 
 .text-outlined {
   -webkit-text-stroke: 2px var( --color-header-counter);
-}
+} */

@@ -1,0 +1,156 @@
+.silueta {
+  filter: drop-shadow(0 0 0 black) drop-shadow(0 0 1px black);
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+}
+
+.card-background {
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-card-background-1) 60%,
+    var(--color-card-background-2) 50%
+  );
+  background-size: 100% 10px;
+  background-repeat: repeat;
+}
+
+.effect3D {
+  box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 1),
+    inset 4px 4px 4px rgba(255, 255, 255, 1), 3px 0px 12px rgba(0, 0, 0, 0.7);
+}
+
+.gen1 {
+  border-style: solid;
+  border-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(228, 0, 43, 1) 12%,
+    rgba(228, 0, 43, 1) 36%,
+    rgba(0, 115, 180, 1) 36%,
+    rgba(0, 115, 180, 1) 64%,
+    rgba(255, 222, 0, 1) 64%,
+    rgba(255, 222, 0, 1) 92%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  border-image-slice: 1;
+}
+
+.gen2 {
+  border-style: solid;
+  border-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(212, 175, 55, 1) 12%,
+    rgba(212, 175, 55, 1) 36%,
+    rgba(192, 192, 192, 1) 36%,
+    rgba(192, 192, 192, 1) 64%,
+    rgba(139, 190, 206, 1) 64%,
+    rgba(139, 190, 206, 1) 92%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  border-image-slice: 1;
+}
+
+.gen3 {
+  border-style: solid;
+  border-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(155, 17, 30, 1) 12%,
+    rgba(155, 17, 30, 1) 36%,
+    rgba(15, 82, 186, 1) 36%,
+    rgba(15, 82, 186, 1) 64%,
+    rgba(80, 200, 120, 1) 64%,
+    rgba(80, 200, 120, 1) 92%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  border-image-slice: 1;
+}
+
+.gen4 {
+  border-style: solid;
+  border-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(185, 242, 255, 1) 12%,
+    rgba(185, 242, 255, 1) 36%,
+    rgba(224, 187, 228, 1) 36%,
+    rgba(224, 187, 228, 1) 64%,
+    rgba(229, 228, 226, 1) 64%,
+    rgba(229, 228, 226, 1) 92%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  border-image-slice: 1;
+}
+
+.gen5 {
+  border-style: solid;
+  border-image: linear-gradient(
+      90deg,
+      rgba(248, 248, 248, 1) 0%,
+      rgba(248, 248, 248, 1) 45%,
+      rgba(54, 69, 79, 1) 45%,
+      rgba(54, 69, 79, 1) 90%,
+      rgba(0, 0, 0, 1) 100%
+    )
+    1;
+  border-image-slice: 1;
+}
+
+.gen6 {
+  border-style: solid;
+  border-image: linear-gradient(
+      90deg,
+      rgba(220, 20, 60, 1) 0%,
+      rgba(220, 20, 60, 1) 45%,
+      rgba(30, 144, 255, 1) 45%,
+      rgba(30, 144, 255, 1) 90%,
+      rgba(0, 0, 0, 1) 100%
+    )
+    1;
+  border-image-slice: 1;
+}
+
+.gen7 {
+  border-style: solid;
+  border-image: linear-gradient(
+      90deg,
+      rgba(255, 165, 0, 1) 0%,
+      rgba(255, 165, 0, 1) 45%,
+      rgba(25, 25, 112, 1) 45%,
+      rgba(25, 25, 112, 1) 90%,
+      rgba(0, 0, 0, 1) 100%
+    )
+    1;
+  border-image-slice: 1;
+}
+
+.gen8 {
+  border-style: solid;
+  border-image: linear-gradient(
+      90deg,
+      rgba(139, 0, 0, 1) 0%,
+      rgba(139, 0, 0, 1) 45%,
+      rgba(65, 105, 225, 1) 45%,
+      rgba(65, 105, 225, 1) 90%,
+      rgba(0, 0, 0, 1) 100%
+    )
+    1;
+  border-image-slice: 1;
+}
+
+.gen9 {
+  border-style: solid;
+  border-image: linear-gradient(
+      90deg,
+      rgba(255, 36, 0, 1) 0%,
+      rgba(255, 36, 0, 1) 45%,
+      rgba(106, 13, 173, 1) 45%,
+      rgba(106, 13, 173, 1) 90%,
+      rgba(0, 0, 0, 1) 100%
+    )
+    1;
+  border-image-slice: 1;
+}

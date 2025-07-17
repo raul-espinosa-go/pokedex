@@ -2,30 +2,30 @@
 @import "tailwindcss";
 
 :root {
-  font-family: var(--font-oswald), sans-serif;
+  font-family: var(--font-cabin-condensed), sans-serif;
 }
 
 @theme {
-  --color-pokemon-card-background: #fceab8;
-  --color-pokeball-background: #f1ddaa;
-  --color--pokeball-background-hovered: #e68731;
-  /* --color-cornflower-blue: #6188fc; */
-  --color-pokemon-card-hovered: #f49545;
-  --color-pokemon-card-label: #da4443;
-  --color-pokemon-card-label-shadow: #b53732;
-  --color-header-yellow: #fffe38;
-  --color-header-gold: #ffe77d;
-  --color-header-shadow: #38372f;
-  --color-header-counter: #78640E;
-  --color-footer-background: #689AD5;
-  --color-console-button: #6D6A60;
-  --color-filter-background: #DFBF4E;
-
-  --shadow-hard-long: 0px 6px 0px;
-  --shadow-hard-short: 0px 4px 0px;
-  --shadow-pokeball: 0px 0px 3px 2px inset;
-  --shadow-pokemon-card: 0px 0px 5px 6px inset;
+  --color-card-background-1: #C1C1A8;
+  --color-card-background-2: #BBBB9F;
 
   --font-cabin-condensed: "Cabin Condensed", sans-serif;
   --font-oswald: "Oswald", sans-serif;
+  --font-magnus: "Magnus", sans-serif;
+}
+
+@utility text-vertical-rl {
+  writing-mode: vertical-rl;
+}
+
+@utility text-vertical-lr {
+  writing-mode: sideways-lr;
+}
+
+@font-face {
+  font-family: Magnus;
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/Thraex_Magnus.woff2") format("woff2");
 }
