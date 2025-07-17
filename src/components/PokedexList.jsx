@@ -215,11 +215,11 @@ function PokedexList({ className }) {
 
   return (
     <div
-      className={`${className} overflow-hidden flex flex-col items-center justify-center pt-12 pb-8`}
+      className={`${className} overflow-hidden flex flex-col items-center justify-center md:pt-12 md:pb-16`}
     >
       <div
         ref={scrollContainerRef}
-        className="flex flex-row gap-3 h-full w-full overflow-x-auto px-8"
+        className="flex flex-row h-full gap-3 w-full overflow-x-auto px-8"
       >
         {visiblePokemon.map((pokemon) => (
           <PokemonCard key={pokemon.id} pokemon={pokemon} />

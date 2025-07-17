@@ -29,27 +29,30 @@ function PokemonCard({ pokemon }) {
 
   return (
     <button
-      className={`${styles["card-background"]} ${styles["effect3D"]} h-full flex flex-col gap-2 cursor-pointer`}
+      className={`${styles["card-background"]} ${styles["effect3D"]} h-full flex flex-row items-center justify-between md:py-2`}
       onMouseDown={handleMouseDown}
       onClick={handleClick}
     >
       <div
-        className={`border-y-6 ${styles[generation]} my-4 py-2 px-4 h-full flex flex-col items-center justify-between gap-4`}
+        className={`border-y-4 md:border-y-4 ${styles[generation]} overflow-y-hidden px-1 md:px-1 h-full flex flex-col items-center justify-around gap-2 truncate`}
       >
-        <div className="flex flex-col items-center justify-around gap-2 overflow-ellipsis truncate">
+        <div className="flex flex-col items-center justify-around gap-2 truncate">
           <img
-            className={`${styles.silueta} h-auto max-w-20 sm:max-w-10`}
+            className={`${styles.silueta} h-auto max-w-20 sm:max-w-6 md:max-w-10 lg:max-w-24`}
             src={pokemon.image_url}
             alt={pokemon.name}
           />
-          <p className={`text-vertical-rl text-4xl sm:text-sm md:text-lg lg:text-4xl font-bold`}>
+          <p
+            className={`text-vertical-rl text-sm sm:text-xs md:text-sm lg:text-4xl font-bold`}
+          >
             {pokemon.name}
           </p>
         </div>
 
-        <p className="text-4xl sm:text-sm md:text-lg lg:text-4xl font-bold">{pokemon.id}</p>
+        <p className="text-sm sm:text-sm md:text-sm lg:text-4xl font-bold">
+          {pokemon.id}
+        </p>
       </div>
-
     </button>
   );
 }
