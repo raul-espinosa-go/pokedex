@@ -6,7 +6,7 @@ import PokemonDetails from "../components/PokemonDetails.jsx";
 
 function App() {
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-red-500">
+    <div className="flex flex-col h-screen overflow-hidden">
       {/* <Header className="fixed top-0" /> */}
       <div className="">
         {/* <img src={image} alt="" className="opacity-80 fixed top-0 z-20" /> */}

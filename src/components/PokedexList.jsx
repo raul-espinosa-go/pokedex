@@ -1,6 +1,6 @@
 import pokemonList from "@/data/pokedex.json";
 import PokemonCard from "./PokemonCard.jsx";
-import "./Pokedex.css";
+import styles from "@/components/PokedexList.module.css";
 import { useEffect, useRef } from "react";
 import usePokedexStore from "@/store/usePokedexStore.js";
 
@@ -48,10 +48,10 @@ function PokedexList({ className }) {
   const visiblePokemon = filteredPokemon.slice(0, pokemonCount);
 
   return (
-    <div className={`${className} overflow-hidden`}>
+    <div className={`${className} overflow-hidden flex flex-col py-4`}>
       <div
         ref={scrollContainerRef}
-        className="flex flex-row gap-2 h-full w-full overflow-x-auto"
+        className="flex flex-row gap-3 h-full w-full overflow-x-auto px-8"
       >
         {visiblePokemon.map((pokemon) => (
           <PokemonCard key={pokemon.id} pokemon={pokemon} />
@@ -60,6 +60,7 @@ function PokedexList({ className }) {
           <div ref={sentinelRef} className="w-12 h-full pointer-events-none" />
         )}
       </div>
+      <div className={`bg-white w-full h-4 border-y-2 ${styles["bottom-shadow"]}`}></div>
     </div>
   );
 }

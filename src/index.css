@@ -9,6 +9,40 @@
   --color-card-background-1: #C1C1A8;
   --color-card-background-2: #BBBB9F;
 
+  /* Pokemon Games Colors */
+  /* Gen 1 */
+  --color-pokemon-red: #e4002b;
+  --color-pokemon-blue: #0073b4;
+  --color-pokemon-yellow: #ffde00;
+  /* Gen 2 */
+  --color-pokemon-gold: #d4af37;
+  --color-pokemon-silver: #c0c0c0;
+  --color-pokemon-crystal: #8bbece;
+  /* Gen 3 */
+  --color-pokemon-ruby: #9b111e;
+  --color-pokemon-sapphire: #0f52ba;
+  --color-pokemon-emerald: #50c878;
+  /* Gen 4 */
+  --color-pokemon-diamond: #b9f2ff;
+  --color-pokemon-pearl: #e0bbe4;
+  --color-pokemon-platinum: #e5e4e2;
+  /* Gen 5 */
+  --color-pokemon-black: #36454f;
+  --color-pokemon-white: #f8f8f8;
+  /* Gen 6 */
+  --color-pokemon-x: #d21436;
+  --color-pokemon-y: #1e90ff;
+  /* Gen 7 */
+  --color-pokemon-sun: #ffa500;
+  --color-pokemon-moon: #191970;
+  /* Gen 8 */
+  --color-pokemon-sword: #8b0000;
+  --color-pokemon-shield: #4169e1;
+  /* Gen 9 */
+  --color-pokemon-scarlet: #ff2400;
+  --color-pokemon-violet: #6a0dad;
+
+
   --font-cabin-condensed: "Cabin Condensed", sans-serif;
   --font-oswald: "Oswald", sans-serif;
   --font-magnus: "Magnus", sans-serif;
