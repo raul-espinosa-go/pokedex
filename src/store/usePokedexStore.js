@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 const usePokedexStore = create((set) => ({
-  pokemonSelected: 1,
+  pokemonSelected: null,
   setPokemonSelected: (pokemonId) => set({ pokemonSelected: pokemonId }),
   pokemonCount: 30,
   setPokemonCount: (countOrUpdater) =>
