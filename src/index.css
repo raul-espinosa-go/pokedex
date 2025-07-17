@@ -57,6 +57,21 @@
   writing-mode: sideways-lr;
 }
 
+@layer components{
+  .chip{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-white);
+    background-color: var(--color-dark);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: calc(infinity * 1px);
+  }
+}
+
 @font-face {
   font-family: Magnus;
   font-style: normal;
