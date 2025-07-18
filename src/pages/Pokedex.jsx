@@ -1,10 +1,8 @@
-import { useEffect, useRef } from "react";
-import pokemonList from "@/data/pokedex.json";
+import { useEffect, useRef, useMemo } from "react";
+import rawPokemonList from "@/data/pokedex.json";
 import PokemonCard from "@/components/PokemonCard.jsx";
 import styles from "./Pokedex.module.css";
 import usePokedexStore from "@/store/usePokedexStore.js";
-import ArrowLeft from "../components/icons/ArrowLeft";
-import ArrowRight from "../components/icons/ArrowRight";
 
 const PAGE_SIZE = 30;
 
@@ -12,25 +10,54 @@ function PokedexList({ className }) {
   const pokemonCount = usePokedexStore((state) => state.pokemonCount);
   const setPokemonCount = usePokedexStore((state) => state.setPokemonCount);
   const filter = usePokedexStore((state) => state.filter);
+  const sortType = usePokedexStore((state) => state.sortType);
   const sentinelRef = useRef();
   const scrollContainerRef = useRef();
   const scrollbarTrackRef = useRef();
   const scrollbarThumbRef = useRef();
 
-  const filteredPokemon = pokemonList.filter((pokemon) => {
-    const search = filter?.toLowerCase().trim();
-    return (
-      pokemon.name.toLowerCase().includes(search) ||
-      pokemon.id.toString().includes(search)
+  // useEffect(() => {
+  //   setPokemonCount(PAGE_SIZE);
+  // }, [setPokemonCount]);
+
+  // Sort the pokemon list based on the selected sort type
+  const processedPokemon = useMemo(() => {
+    const search = filter?.toLowerCase().trim() || "";
+
+    // Filtrar
+    let filtered = rawPokemonList.filter(
+      (pokemon) =>
+        pokemon.name.toLowerCase().includes(search) ||
+        pokemon.id.toString().includes(search)
     );
-  });
+
+    // Ordenar
+    switch (sortType) {
+      case "numerical":
+        filtered.sort((a, b) => a.id - b.id);
+        break;
+      case "numerical-reverse":
+        filtered.sort((a, b) => b.id - a.id);
+        break;
+      case "alphabetical":
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "alphabetical-reverse":
+        filtered.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        break;
+    }
+
+    return filtered;
+  }, [filter, sortType]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           setPokemonCount((prev) =>
-            Math.min(prev + PAGE_SIZE, pokemonList.length)
+            Math.min(prev + PAGE_SIZE, processedPokemon.length)
           );
         }
       },
@@ -213,13 +240,13 @@ function PokedexList({ className }) {
     };
   }, []);
 
-  const visiblePokemon = filteredPokemon.slice(0, pokemonCount);
+  const visiblePokemon = processedPokemon.slice(0, pokemonCount);
 
   return (
-    <div className={`${className} overflow-hidden h-full flex flex-col justify-center`}>
-      <div
-        className={`flex flex-col items-center justify-center`}
-      >
+    <div
+      className={`${className} overflow-hidden h-full flex flex-col justify-center`}
+    >
+      <div className={`flex flex-col items-center justify-center`}>
         <div
           ref={scrollContainerRef}
           className="flex flex-row h-full gap-3 w-full overflow-x-auto px-8"
@@ -227,7 +254,7 @@ function PokedexList({ className }) {
           {visiblePokemon.map((pokemon) => (
             <PokemonCard key={pokemon.id} pokemon={pokemon} />
           ))}
-          {pokemonCount < pokemonList.length && (
+          {pokemonCount < processedPokemon.length && (
             <div
               ref={sentinelRef}
               className="w-12 h-full pointer-events-none"
@@ -235,7 +262,7 @@ function PokedexList({ className }) {
           )}
         </div>
         <div
-          className={`bg-white w-full h-6 border-y-2 ${styles["bottom-shadow"]}`}
+          className={`bg-white w-full h-6 border-y-1 ${styles["bottom-shadow"]}`}
         />
         <div
           ref={scrollbarTrackRef}
@@ -244,7 +271,7 @@ function PokedexList({ className }) {
           <div
             ref={scrollbarThumbRef}
             className="absolute top-0 h-2 bg-white rounded-full cursor-pointer"
-            style={{ left: 0, width: "80px" }} // se sobreescribirá dinámicamente
+            style={{ left: 0, width: "80px" }}
           ></div>
         </div>
       </div>

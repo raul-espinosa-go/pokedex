@@ -6,9 +6,9 @@
 }
 
 @theme {
-  --color-card-background-1: #C1C1A8;
-  --color-card-background-2: #BBBB9F;
-  --color-dark: #1B2B3A;
+  --color-card-background-1: #c1c1a8;
+  --color-card-background-2: #bbbb9f;
+  --color-dark: #1b2b3a;
 
   /* Pokemon Games Colors */
   /* Gen 1 */
@@ -43,7 +43,6 @@
   --color-pokemon-scarlet: #ff2400;
   --color-pokemon-violet: #6a0dad;
 
-
   --font-cabin-condensed: "Cabin Condensed", sans-serif;
   --font-oswald: "Oswald", sans-serif;
   --font-magnus: "Magnus", sans-serif;
@@ -57,8 +56,18 @@
   writing-mode: sideways-lr;
 }
 
-@layer components{
-  .chip{
+@utility bg-stripped {
+  background-image: linear-gradient(
+    to bottom,
+    --value(--color-1-*) 70%,
+    --value(--color-2-*) 50%
+  );
+  background-size: 100% 5px;
+  background-repeat: repeat;
+}
+
+@layer components {
+  .chip {
     display: flex;
     flex-direction: row;
     justify-content: center;

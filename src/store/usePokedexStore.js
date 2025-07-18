@@ -13,6 +13,8 @@ const usePokedexStore = create((set) => ({
     })),
   filter: "",
   setFilter: (filter) => set({ filter }),
+  sortType: "numerical",
+  setSortType: (sortType) => set({ sortType }),
 }));
 
 export default usePokedexStore;
