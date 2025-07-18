@@ -25,11 +25,12 @@ function PokedexList({ className }) {
     const search = filter?.toLowerCase().trim() || "";
 
     // Filtrar
-    let filtered = rawPokemonList.filter(
-      (pokemon) =>
-        pokemon.name.toLowerCase().includes(search) ||
-        pokemon.id.toString().includes(search)
-    );
+    let filtered = rawPokemonList.filter((pokemon) => {
+      if (search.match(/^\d+$/)) {
+      return pokemon.id.toString() === search; // Exact match for ID
+      }
+      return pokemon.name.toLowerCase().includes(search); // Partial match for name
+    });
 
     // Ordenar
     switch (sortType) {
