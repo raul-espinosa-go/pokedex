@@ -6,6 +6,7 @@ const usePokedexStore = create(
     (set) => ({
       pokemonSelected: null,
       setPokemonSelected: (pokemonId) => set({ pokemonSelected: pokemonId }),
+
       pokemonCount: 30,
       setPokemonCount: (countOrUpdater) =>
         set((state) => ({
@@ -14,13 +15,20 @@ const usePokedexStore = create(
               ? countOrUpdater(state.pokemonCount)
               : countOrUpdater,
         })),
+
       filter: "",
       setFilter: (filter) => set({ filter }),
+
       sortType: "numerical",
       setSortType: (sortType) => set({ sortType }),
     }),
     {
-      name: "pokedex-storage", // clave en localStorage
+      name: "pokedex-storage",
+      partialize: (state) => ({
+        pokemonSelected: state.pokemonSelected,
+        filter: state.filter,
+        sortType: state.sortType,
+      }),
     }
   )
 );
