@@ -1,12 +1,15 @@
 // import pokeballImg from "@/assets/pokeball.webp";
 // import ArrowRight from "./icons/ArrowRight.jsx";
 
+import { useNavigate } from "react-router-dom";
 import usePokedexStore from "@/store/usePokedexStore.js";
 import { checkPokemonGeneration } from "@/utils.js";
+
 
 import styles from "@/components/PokemonCard.module.css";
 
 function PokemonCard({ pokemon }) {
+  const navigate = useNavigate();
   const pokemonSelected = usePokedexStore((state) => state.pokemonSelected);
   const setPokemonSelected = usePokedexStore(
     (state) => state.setPokemonSelected
@@ -24,6 +27,9 @@ function PokemonCard({ pokemon }) {
     const clickEndX = e.clientX;
     if (Math.abs(clickEndX - clickStartX) > 5) return;
     setPokemonSelected(pokemon.id);
+    navigate(`/pokedex/${pokemon.id}`, {
+      state: { pokemon: pokemonSelected },
+    });
   };
 
   return (
