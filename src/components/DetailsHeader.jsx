@@ -1,4 +1,4 @@
-import usePokedexStore from "../store/usePokedexStore";
+import usePokedexStore from "../store/usePokedexStore.js";
 import pokeballImg from "@/assets/pokeball.webp";
 import { debounce } from "@/utils.js";
 import { useEffect, useMemo, useState, useRef } from "react";
@@ -14,7 +14,7 @@ import ArrowDownZA from "./icons/ArrowDownZA.jsx";
 
 import styles from "./Layout.module.css";
 
-function Header({ className }) {
+function PokedexHeader({ className }) {
   const TOTAL_POKEMON = 1025;
 
   const pokemonCount = usePokedexStore((state) => state.pokemonCount);
@@ -185,4 +185,4 @@ function Header({ className }) {
   );
 }
 
-export default Header;
+export default PokedexHeader;
