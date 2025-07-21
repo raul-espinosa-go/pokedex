@@ -13,30 +13,24 @@ function usePokemon() {
   const [pokemonData, setPokemonData] = useState(null);
   const [speciesData, setSpeciesData] = useState(null);
 
-//   useEffect(() => {
-//     const fetchInitial = async () => {
-//       if (!pokemonSelected) return;
+  // Leer desde localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("selectedPokemon");
+    if (!saved) return;
 
-//       setLoading(true);
-//       setError(null);
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed.id === pokemonSelected) {
+        setPokemonData(parsed.data);
+        setSpeciesData(parsed.species);
+        setLoading(false); // Ya tenemos datos listos
+      }
+    } catch (err) {
+      console.warn("No se pudo leer el Pokémon guardado:", err);
+    }
+  }, [pokemonSelected]);
 
-//       try {
-//         const [pokemon, species] = await Promise.all([
-//           getPokemonById(pokemonSelected),
-//           getPokemonSpeciesById(pokemonSelected),
-//         ]);
-//         setPokemonData(pokemon);
-//         setSpeciesData(species);
-//       } catch (err) {
-//         setError(err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchInitial();
-//   }, []);
-
+  // Hacer fetch solo si no hay datos o queremos refrescar
   useEffect(() => {
     if (!pokemonSelected) return;
 
@@ -44,14 +38,27 @@ function usePokemon() {
       setLoading(true);
       setError(null);
       try {
-        const pokemon = await getPokemonById(pokemonSelected);
-        const species = await getPokemonSpeciesById(pokemonSelected);
+        const [pokemon, species] = await Promise.all([
+          getPokemonById(pokemonSelected),
+          getPokemonSpeciesById(pokemonSelected),
+        ]);
 
         setPokemonData(pokemon);
         setSpeciesData(species);
 
-        // console.log("Pokemon Data:", pokemon);
-        // console.log("Species Data:", species);
+        // console.log("Pokemon data fetched:", pokemon);
+        // console.log("Species data fetched:", species);
+
+        // Guardar en localStorage
+        localStorage.setItem(
+          "pokemonData",
+          JSON.stringify({
+            id: pokemonSelected,
+            data: pokemon,
+            species: species,
+            timestamp: Date.now(),
+          })
+        );
       } catch (err) {
         setError(err);
       } finally {
@@ -59,7 +66,10 @@ function usePokemon() {
       }
     };
 
-    fetchPokemonData();
+    // Solo hacer fetch si no hay datos aún (para evitar doble carga)
+    if (!pokemonData || !speciesData) {
+      fetchPokemonData();
+    }
   }, [pokemonSelected]);
 
   return {
