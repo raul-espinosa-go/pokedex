@@ -2,6 +2,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 
 // Pages
 import Pokedex from "@/pages/Pokedex.jsx";
+import PokemonDetails from "@/pages/[id].jsx";
 
 // Components
 import Footer from "@/components/Footer.jsx";
@@ -13,12 +14,17 @@ function App() {
   const location = useLocation();
 
   return (
-    <main
-      className={`${styles["main-background"]} flex flex-col justify-between h-dvh overflow-hidden`}
-    >
+    <main className={` flex flex-col justify-between h-dvh overflow-hidden`}>
       <Header className="w-full fixed top-0" />
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Pokedex />} />
+        <Route
+          path="/"
+          element={<Pokedex className={`${styles["main-background"]}`} />}
+        />
+        <Route path="/pokedex/">
+          {/* <Route index element={<Pokedex />} /> */}
+          <Route path=":id" element={<PokemonDetails className={`${styles["details-background"]}`} />} />
+        </Route>
         {/* Add more routes as needed */}
       </Routes>
       <Footer className="w-full fixed bottom-0" />
