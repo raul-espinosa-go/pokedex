@@ -42,6 +42,9 @@
   /* Gen 9 */
   --color-pokemon-scarlet: #ff2400;
   --color-pokemon-violet: #6a0dad;
+  /* Hisui */
+  --color-pokemon-hisui-1: #E3E2E0;
+  --color-pokemon-hisui-2: #D2B343;
 
   /* Pokemon Types */
   --color-type-bug: #91A119;

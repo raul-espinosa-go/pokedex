@@ -3,6 +3,7 @@ import rawPokemonList from "@/data/pokedex.json";
 import PokemonCard from "@/components/PokemonCard.jsx";
 import styles from "./Pokedex.module.css";
 import usePokedexStore from "@/store/usePokedexStore.js";
+import PokedexHeader from "@/components/PokedexHeader.jsx";
 
 const PAGE_SIZE = 30;
 
@@ -27,7 +28,7 @@ function PokedexList({ className }) {
     // Filtrar
     let filtered = rawPokemonList.filter((pokemon) => {
       if (search.match(/^\d+$/)) {
-      return pokemon.id.toString() === search; // Exact match for ID
+        return pokemon.id.toString() === search; // Exact match for ID
       }
       return pokemon.name.toLowerCase().includes(search); // Partial match for name
     });
@@ -244,39 +245,42 @@ function PokedexList({ className }) {
   const visiblePokemon = processedPokemon.slice(0, pokemonCount);
 
   return (
-    <div
-      className={`${className} overflow-hidden h-full flex flex-col justify-center`}
-    >
-      <div className={`flex flex-col items-center justify-center`}>
-        <div
-          ref={scrollContainerRef}
-          className="flex flex-row h-full gap-3 w-full overflow-x-auto px-8"
-        >
-          {visiblePokemon.map((pokemon) => (
-            <PokemonCard key={pokemon.id} pokemon={pokemon} />
-          ))}
-          {pokemonCount < processedPokemon.length && (
-            <div
-              ref={sentinelRef}
-              className="w-12 h-full pointer-events-none"
-            />
-          )}
-        </div>
-        <div
-          className={`bg-white w-full h-6 border-y-1 ${styles["bottom-shadow"]}`}
-        />
-        <div
-          ref={scrollbarTrackRef}
-          className="relative h-2 bg-white/30 mt-4 w-2/3 rounded-full"
-        >
+    <>
+      <PokedexHeader className="w-full fixed top-0" />
+      <div
+        className={`${className} overflow-hidden h-full flex flex-col justify-center`}
+      >
+        <div className={`flex flex-col items-center justify-center`}>
           <div
-            ref={scrollbarThumbRef}
-            className="absolute top-0 h-2 bg-white rounded-full cursor-pointer"
-            style={{ left: 0, width: "80px" }}
-          ></div>
+            ref={scrollContainerRef}
+            className="flex flex-row h-full gap-3 w-full overflow-x-auto px-8"
+          >
+            {visiblePokemon.map((pokemon) => (
+              <PokemonCard key={pokemon.id} pokemon={pokemon} />
+            ))}
+            {pokemonCount < processedPokemon.length && (
+              <div
+                ref={sentinelRef}
+                className="w-12 h-full pointer-events-none"
+              />
+            )}
+          </div>
+          <div
+            className={`bg-white w-full h-6 border-y-1 ${styles["bottom-shadow"]}`}
+          />
+          <div
+            ref={scrollbarTrackRef}
+            className="relative h-2 bg-white/30 mt-4 w-2/3 rounded-full"
+          >
+            <div
+              ref={scrollbarThumbRef}
+              className="absolute top-0 h-2 bg-white rounded-full cursor-pointer"
+              style={{ left: 0, width: "80px" }}
+            ></div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -141,6 +141,19 @@
   border-image-slice: 1;
 }
 
+.hisui {
+  border-style: solid;
+  border-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    var(--color-pokemon-hisui-1) 12%,
+    var(--color-pokemon-hisui-2) 52%,
+    var(--color-pokemon-hisui-2) 52%,
+    var(--color-pokemon-hisui-2) 92%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  border-image-slice: 1;
+}
 .gen9 {
   border-style: solid;
   border-image: linear-gradient(
@@ -150,10 +163,6 @@
     var(--color-pokemon-scarlet) 52%,
     var(--color-pokemon-violet) 52%,
     var(--color-pokemon-violet) 92%,
-    /* rgba(255, 36, 0, 1) 12%,
-    rgba(255, 36, 0, 1) 52%,
-    rgba(106, 13, 173, 1) 52%,
-    rgba(106, 13, 173, 1) 92%, */
     rgba(0, 0, 0, 1) 100%
   );
   border-image-slice: 1;

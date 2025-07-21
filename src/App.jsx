@@ -6,7 +6,7 @@ import PokemonDetails from "@/pages/[id].jsx";
 
 // Components
 import Footer from "@/components/Footer.jsx";
-import Header from "@/components/Header.jsx";
+import PokedexHeader from "@/components/PokedexHeader.jsx";
 
 import styles from "@/App.module.css";
 
@@ -15,14 +15,13 @@ function App() {
 
   return (
     <main className={` flex flex-col justify-between h-dvh overflow-hidden`}>
-      <Header className="w-full fixed top-0" />
       <Routes location={location} key={location.pathname}>
         <Route
           path="/"
           element={<Pokedex className={`${styles["main-background"]}`} />}
         />
         <Route path="/pokedex/">
-          {/* <Route index element={<Pokedex />} /> */}
+          {/* <Route index element={<Pokedex className={`${styles["main-background"]}`}/>} /> */}
           <Route path=":id" element={<PokemonDetails className={`${styles["details-background"]}`} />} />
         </Route>
         {/* Add more routes as needed */}

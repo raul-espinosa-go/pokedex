@@ -2,6 +2,7 @@ import usePokemon from "@/hooks/usePokemon";
 import usePokedexStore from "../store/usePokedexStore";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import styles from "./Details.module.css";
 
 // Type images icons
 import Bug from "@/assets/types/bug.svg";
@@ -22,6 +23,9 @@ import Psychic from "@/assets/types/psychic.svg";
 import Rock from "@/assets/types/rock.svg";
 import Steel from "@/assets/types/steel.svg";
 import Water from "@/assets/types/water.svg";
+
+// Components
+import DetailsHeader from "@/components/DetailsHeader.jsx";
 
 const bgClassNames = {
   bug: "bg-type-bug",
@@ -84,10 +88,10 @@ function PokemonDetails({ className }) {
   if (pokemonSelected !== numberLocation) {
     if (numberLocation < 1 || numberLocation > 1025) {
       console.error("Invalid Pokémon ID");
-      return null; 
+      return null;
     }
     setPokemonSelected(numberLocation);
-    return null; 
+    return null;
   }
 
   if (loading)
@@ -105,54 +109,59 @@ function PokemonDetails({ className }) {
     "Pokémon";
   const types = pokemonData.types.map((type) => type.type.name);
   const height = pokemonData.height / 10;
-  const weight = pokemonData.weight / 10; 
+  const weight = pokemonData.weight / 10;
 
   const imageUrl = () => {
-    const isShiny = Math.floor(Math.random() * 1) === 0;
+    const isShiny = Math.floor(Math.random() * 4096) === 0;
     return isShiny
-      ? pokemonData.sprites.other["official-artwork"].front_shiny
-      : pokemonData.sprites.other["official-artwork"].front_default;
+      ? pokemonData.sprites.other.home.front_shiny
+      : pokemonData.sprites.other.home.front_default;
   };
 
   return (
-    <div
-      className={`${className} overflow-hidden h-full flex flex-col justify-center`}
-    >
-      <div className="flex flex-row items-center gap-4 p-4 ml-4">
-        <div className="text-white">
-          <h2>No. {`${speciesData.id}`}</h2>
-          <h1 className="text-3xl font-bold capitalize">{pokemonData.name}</h1>
-          <h2>{`${genera}`}</h2>
-          <div className="flex items-center gap-2 mb-8">
-            {types.map((type) => (
-              <div
-                key={type}
-                className={`flex chip ${bgClassNames[type]} pr-4`}
-              >
-                <img
-                  src={typeIcons[type]}
-                  alt={type}
-                  className="w-6 h-6 md:w-6 md:h-6 mr-1"
-                />
-                <span className="uppercase">{type}</span>
-              </div>
-            ))}
+    <>
+      <DetailsHeader className="w-full fixed top-0" />
+      <div
+        className={`${className} overflow-hidden h-full flex flex-col justify-center`}
+      >
+        <div className="flex flex-row items-center gap-4 p-4 ml-4">
+          <div className="text-white">
+            <h2>No. {`${speciesData.id}`}</h2>
+            <h1 className="text-3xl font-bold capitalize">
+              {pokemonData.name}
+            </h1>
+            <h2>{`${genera}`}</h2>
+            <div className="flex items-center gap-2 mb-8">
+              {types.map((type) => (
+                <div
+                  key={type}
+                  className={`flex chip ${bgClassNames[type]} pr-4`}
+                >
+                  <img
+                    src={typeIcons[type]}
+                    alt={type}
+                    className="w-6 h-6 md:w-6 md:h-6 mr-1"
+                  />
+                  <span className="uppercase">{type}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xl md:text-xl md:mt-2">{cleanFlavorText}</p>
+            <div className="flex flex-row items-center gap-2 mt-2">
+              <span className="font-bold">Height:</span>
+              <span>{`${height} m`}</span>
+              <span className="font-bold">Weight:</span>
+              <span>{`${weight} kg`}</span>
+            </div>
           </div>
-          <p className="text-xl md:text-xl md:mt-2">{cleanFlavorText}</p>
-          <div className="flex flex-row items-center gap-2 mt-2">
-            <span className="font-bold">Height:</span>
-            <span>{`${height} m`}</span>
-            <span className="font-bold">Weight:</span>
-            <span>{`${weight} kg`}</span>
-          </div>
+          <img
+            src={imageUrl()}
+            alt={pokemonData.name}
+            className={`max-w-48 max-h-48 object-contain ${styles.silueta}`}
+          />
         </div>
-        <img
-          src={imageUrl()}
-          alt={pokemonData.name}
-          className="max-w-64 max-h-64 object-contain"
-        />
       </div>
-    </div>
+    </>
   );
 }
 
