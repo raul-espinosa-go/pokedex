@@ -43,6 +43,26 @@
   --color-pokemon-scarlet: #ff2400;
   --color-pokemon-violet: #6a0dad;
 
+  /* Pokemon Types */
+  --color-type-bug: #91A119;
+  --color-type-dark: #50413F;
+  --color-type-dragon: #5061E1;
+  --color-type-electric: #FAC000;
+  --color-type-fairy: #EF71EF;
+  --color-type-fighting: #FF8000;
+  --color-type-fire: #E62829;
+  --color-type-flying: #81B9EF;
+  --color-type-ghost: #704170;
+  --color-type-grass: #3FA129;
+  --color-type-ground: #915121;
+  --color-type-ice: #3FD8FF;
+  --color-type-normal: #9FA19F;
+  --color-type-poison: #8F41CB;
+  --color-type-psychic: #EF4179;
+  --color-type-rock: #AFA981;
+  --color-type-steel: #60A1B8;
+  --color-type-water: #2980EF;
+
   --font-cabin-condensed: "Cabin Condensed", sans-serif;
   --font-oswald: "Oswald", sans-serif;
   --font-magnus: "Magnus", sans-serif;
