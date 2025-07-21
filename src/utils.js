@@ -20,7 +20,8 @@ export function checkPokemonGeneration(id) {
   if (id >= 494 && id <= 649) return "gen5"; // Unova
   if (id >= 650 && id <= 721) return "gen6"; // Kalos
   if (id >= 722 && id <= 809) return "gen7"; // Alola
-  if (id >= 810 && id <= 905) return "gen8"; // Galar
+  if (id >= 810 && id <= 898) return "gen8"; // Galar
+  if (id >= 899 && id <= 905) return "hisui"; // Hisui
   if (id >= 906 && id <= 1025) return "gen9"; // Paldea
   return "unknown";
 }
