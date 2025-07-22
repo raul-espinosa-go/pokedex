@@ -1,10 +1,17 @@
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Vibrant } from "node-vibrant/browser";
+
 import usePokemon from "@/hooks/usePokemon";
 import usePokedexStore from "../store/usePokedexStore";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import styles from "./Details.module.css";
+import { getContrastText } from "../utils.js";
 
-// Type images icons
+import DetailsHeader from "@/components/DetailsHeader.jsx";
+import ArrowLeft from "@/components/icons/ArrowLeft.jsx";
+import ArrowRight from "@/components/icons/ArrowRight.jsx";
+
+// Type icons
 import Bug from "@/assets/types/bug.svg";
 import Dark from "@/assets/types/dark.svg";
 import Dragon from "@/assets/types/dragon.svg";
@@ -24,9 +31,7 @@ import Rock from "@/assets/types/rock.svg";
 import Steel from "@/assets/types/steel.svg";
 import Water from "@/assets/types/water.svg";
 
-// Components
-import DetailsHeader from "@/components/DetailsHeader.jsx";
-
+// Background classes and icon map
 const bgClassNames = {
   bug: "bg-type-bug",
   dark: "bg-type-dark",
@@ -69,41 +74,68 @@ const typeIcons = {
   water: Water,
 };
 
-function PokemonDetails({ className }) {
+function PokemonDetails({ className = "" }) {
   const { pokemonData, speciesData, loading, error } = usePokemon();
   const pokemonSelected = usePokedexStore((state) => state.pokemonSelected);
   const setPokemonSelected = usePokedexStore(
     (state) => state.setPokemonSelected
   );
+
   const location = useLocation();
+  const navigate = useNavigate();
+
   const numberLocation = parseInt(location.pathname.split("/pokedex/").pop());
+  // const [color1, setColor1] = useState("#ffffff");
+  // const [color2, setColor2] = useState("#ffffff");
+  const [textColor, setTextColor] = useState("text-white");
 
   useEffect(() => {
     if (!pokemonSelected) {
       console.warn("No Pokémon selected");
-      return;
     }
-  }, [pokemonSelected, location]);
+  }, [pokemonSelected]);
 
-  if (pokemonSelected !== numberLocation) {
-    if (numberLocation < 1 || numberLocation > 1025) {
-      console.error("Invalid Pokémon ID");
-      return null;
+  useEffect(() => {
+    if (
+      numberLocation >= 1 &&
+      numberLocation <= 1025 &&
+      numberLocation !== pokemonSelected
+    ) {
+      setPokemonSelected(numberLocation);
     }
-    setPokemonSelected(numberLocation);
-    return null;
-  }
+  }, [numberLocation]);
+
+  // useEffect(() => {
+  //   if (!pokemonData?.sprites?.other?.home?.front_default) return;
+
+  //   Vibrant.from(pokemonData.sprites.other.home.front_default)
+  //     .getPalette()
+  //     .then((palette) => {
+  //       console.log("Vibrant palette:", palette);
+  //       const Vibrant = palette.Vibrant?.hex || "#000000";
+  //       const Muted = palette.Muted?.hex || "#ffffff";
+  //       const contrastText = getContrastText(Vibrant);
+  //       setTextColor(contrastText > 0.5 ? "text-black" : "text-white");
+  //       setColor1(Vibrant);
+  //       setColor2(Muted);
+  //     })
+  //     .catch((err) => console.error("Vibrant error:", err));
+  // }, [pokemonData]);
 
   if (loading)
     return (
-      <div className={`${className}`}>
+      <div className={className}>
         <p>Loading...</p>
       </div>
     );
   if (error) return <p>Error: {error.message}</p>;
+  if (!pokemonData || !speciesData) return null;
 
   const cleanFlavorText =
-    speciesData.flavor_text_entries?.[0]?.flavor_text.replace(/\f/g, " ");
+    speciesData.flavor_text_entries
+      ?.find((entry) => entry.language.name === "en")
+      ?.flavor_text.replace(/\f/g, " ") || "";
+
   const genera =
     speciesData.genera?.find((g) => g.language.name === "en")?.genus ||
     "Pokémon";
@@ -111,26 +143,35 @@ function PokemonDetails({ className }) {
   const height = pokemonData.height / 10;
   const weight = pokemonData.weight / 10;
 
-  const imageUrl = () => {
-    const isShiny = Math.floor(Math.random() * 4096) === 0;
-    return isShiny
-      ? pokemonData.sprites.other.home.front_shiny
-      : pokemonData.sprites.other.home.front_default;
-  };
-
   return (
     <>
       <DetailsHeader className="w-full fixed top-0" />
       <div
-        className={`${className} overflow-hidden h-full flex flex-col justify-center`}
+        className={`${className} overflow-hidden h-full flex flex-row justify-center`}
+        // style={{
+        //   background: `linear-gradient(to bottom, ${color1}, ${color2})`,
+        // }}
       >
+        <button
+          onClick={() => {
+            const prevId = pokemonSelected - 1;
+            if (prevId >= 1) {
+              setPokemonSelected(prevId);
+              navigate(`/pokedex/${prevId}`);
+            }
+          }}
+        >
+          <ArrowLeft />
+        </button>
+
         <div className="flex flex-row items-center gap-4 p-4 ml-4">
-          <div className="text-white">
-            <h2>No. {`${speciesData.id}`}</h2>
+          <div className={`${textColor}`}>
+            <h2>No. {speciesData.id}</h2>
             <h1 className="text-3xl font-bold capitalize">
               {pokemonData.name}
             </h1>
-            <h2>{`${genera}`}</h2>
+            <h2>{genera}</h2>
+
             <div className="flex items-center gap-2 mb-8">
               {types.map((type) => (
                 <div
@@ -140,26 +181,41 @@ function PokemonDetails({ className }) {
                   <img
                     src={typeIcons[type]}
                     alt={type}
-                    className="w-6 h-6 md:w-6 md:h-6 mr-1"
+                    className="w-6 h-6 mr-1"
                   />
                   <span className="uppercase">{type}</span>
                 </div>
               ))}
             </div>
-            <p className="text-xl md:text-xl md:mt-2">{cleanFlavorText}</p>
+
+            <p className="text-xl">{cleanFlavorText}</p>
+
             <div className="flex flex-row items-center gap-2 mt-2">
               <span className="font-bold">Height:</span>
-              <span>{`${height} m`}</span>
+              <span>{height} m</span>
               <span className="font-bold">Weight:</span>
-              <span>{`${weight} kg`}</span>
+              <span>{weight} kg</span>
             </div>
           </div>
+
           <img
-            src={imageUrl()}
+            src={pokemonData.sprites.other.home.front_default}
             alt={pokemonData.name}
             className={`max-w-48 max-h-48 object-contain ${styles.silueta}`}
           />
         </div>
+
+        <button
+          onClick={() => {
+            const nextId = pokemonSelected + 1;
+            if (nextId <= 1025) {
+              setPokemonSelected(nextId);
+              navigate(`/pokedex/${nextId}`);
+            }
+          }}
+        >
+          <ArrowRight />
+        </button>
       </div>
     </>
   );

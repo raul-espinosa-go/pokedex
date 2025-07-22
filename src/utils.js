@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 export function formatNumberTo4Digits(num) {
   return num.toString().padStart(4, "0");
 }
@@ -24,4 +26,31 @@ export function checkPokemonGeneration(id) {
   if (id >= 899 && id <= 905) return "hisui"; // Hisui
   if (id >= 906 && id <= 1025) return "gen9"; // Paldea
   return "unknown";
+}
+
+export function useOrientation() {
+  const getOrientation = () =>
+    window.matchMedia('(orientation: portrait)').matches ? 'portrait' : 'landscape';
+
+  const [orientation, setOrientation] = useState(getOrientation);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(orientation: portrait)');
+    const handleChange = (e) => {
+      setOrientation(e.matches ? 'portrait' : 'landscape');
+    };
+
+    mql.addEventListener('change', handleChange);
+    return () => mql.removeEventListener('change', handleChange);
+  }, []);
+
+  return orientation;
+}
+
+export function getContrastText(hexColor) {
+  const r = parseInt(hexColor.substr(1, 2), 16);
+  const g = parseInt(hexColor.substr(3, 2), 16);
+  const b = parseInt(hexColor.substr(5, 2), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance;
 }
