@@ -21,6 +21,9 @@ const usePokedexStore = create(
 
       sortType: "numerical",
       setSortType: (sortType) => set({ sortType }),
+
+      spriteShown: "front_default",
+      setSpriteShown: (sprite) => set({ spriteShown: sprite }),
     }),
     {
       name: "pokedex-storage",
@@ -28,6 +31,7 @@ const usePokedexStore = create(
         pokemonSelected: state.pokemonSelected,
         filter: state.filter,
         sortType: state.sortType,
+        spriteShown: state.spriteShown,
       }),
     }
   )

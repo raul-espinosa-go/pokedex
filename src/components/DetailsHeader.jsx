@@ -1,33 +1,90 @@
 import usePokedexStore from "../store/usePokedexStore.js";
-import pokeballImg from "@/assets/pokeball.webp";
-import { debounce } from "@/utils.js";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Icons
-import X from "./icons/X.jsx";
-import Dice from "./icons/Dice.jsx";
-import AlignLeft from "./icons/AlignLeft.jsx";
-import ArrowDown01 from "./icons/ArrowDown01.jsx";
-import ArrowDown10 from "./icons/ArrowDown10.jsx";
-import ArrowDownAZ from "./icons/ArrowDownAZ.jsx";
-import ArrowDownZA from "./icons/ArrowDownZA.jsx";
+import Mars from "@/components/icons/Mars.jsx";
+import Sparkles from "@/components/icons/Sparkles.jsx";
+import Venus from "@/components/icons/Venus.jsx";
+import ArrowLeft from "@/components/icons/ArrowLeft.jsx";
 
 import styles from "./Layout.module.css";
 
+import dexicon from "@/assets/dexicon.png";
+
 function PokedexHeader({ className }) {
+  const navigate = useNavigate();
   const [showSortOptions, setShowSortOptions] = useState(false);
   const pokemonData = localStorage.getItem("pokemonData");
   const sprites = pokemonData
     ? JSON.parse(pokemonData).data.sprites.other.home
     : null;
+  // const [spriteShown, setSpriteShown] = useState("front_default");
+  const spriteShown = usePokedexStore((state) => state.spriteShown);
+  const setSpriteShown = usePokedexStore((state) => state.setSpriteShown);
   const triggerRef = useRef(null);
   const panelRef = useRef(null);
 
-  console.log("Parsed Pokemon Data:", sprites);
-
   const buttons = [];
 
-  buttons.push()
+  if (sprites) {
+    const { front_female: femaleSprite } = sprites;
+
+    const hasFemale = !!femaleSprite;
+
+    if (hasFemale) {
+      buttons.push({
+        value: "front_default",
+        icon: <Mars className="w-4 h-4 bg-[#4375DF] rounded-full " />,
+      });
+
+      buttons.push({
+        value: "front_female",
+        icon: <Venus className="w-4 h-4 bg-[#ED4C4D] rounded-full " />,
+      });
+
+      buttons.push({
+        value: "front_shiny",
+        icon: (
+          <div className="flex items-center gap-1">
+            <Mars className="w-4 h-4 bg-[#4375DF] rounded-full " />
+            <Sparkles className="w-4 h-4" />
+          </div>
+        ),
+      });
+
+      buttons.push({
+        value: "front_shiny_female",
+        icon: (
+          <div className="flex items-center gap-1">
+            <Venus className="w-4 h-4 bg-[#ED4C4D] rounded-full " />
+            <Sparkles className="w-4 h-4" />
+          </div>
+        ),
+      });
+    } else {
+      buttons.push({
+        value: "front_default",
+        icon: (
+          <div className="flex items-center gap-1">
+            <Mars className="w-4 h-4 bg-[#4375DF] rounded-full " />
+            <Venus className="w-4 h-4 bg-[#ED4C4D] rounded-full " />
+          </div>
+        ),
+      });
+
+      buttons.push({
+        value: "front_shiny",
+        icon: (
+          <div className="flex items-center gap-1">
+            <Mars className="w-4 h-4 bg-[#4375DF] rounded-full " />
+            <Venus className="w-4 h-4 bg-[#ED4C4D] rounded-full " />
+            <Sparkles className="w-4 h-4" />
+          </div>
+        ),
+      });
+    }
+  }
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -50,14 +107,19 @@ function PokedexHeader({ className }) {
     <header
       className={`items-center z-10 ${className} ${styles.background} border-b-4 border-pokemon-yellow`}
     >
-      <div className="py-3 sm:py-1 flex flex-row justify-between items-center px-8">
-        {/* <div ref={triggerRef} className="relative sort-menu-trigger w-fit">
+      <div className="py-3 sm:py-1 flex flex-row items-center px-8 gap-4">
+        <button
+          className="chip overflow-hidden h-auto p-1 px-2"
+          onClick={() => navigate("/pokedex")}
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </button>
+        <div ref={triggerRef} className="relative sort-menu-trigger w-fit">
           <button
-            className="chip cursor-pointer w-24 md:w-24 justify-start"
+            className="chip cursor-pointer w-18 md:w-18 justify-start p-1"
             onClick={() => setShowSortOptions((prev) => !prev)}
           >
-            {sortIcon}
-            <p className="text-base md:text-base">{sortText}</p>
+            {buttons.find((btn) => btn.value === spriteShown)?.icon || null}
           </button>
 
           {showSortOptions && (
@@ -69,10 +131,10 @@ function PokedexHeader({ className }) {
                 <button
                   key={btn.value}
                   className={`chip cursor-pointer ${
-                    btn.value === sortType ? "bg-gray-600" : ""
-                  } md:w-24 justify-start` }
+                    btn.value === spriteShown ? "bg-gray-600" : ""
+                  } md:w-18 justify-start p-1`}
                   onClick={() => {
-                    setSortType(btn.value);
+                    setSpriteShown(btn.value);
                     setShowSortOptions(false);
                   }}
                 >
@@ -82,7 +144,7 @@ function PokedexHeader({ className }) {
               ))}
             </div>
           )}
-        </div> */}
+        </div>
       </div>
     </header>
   );

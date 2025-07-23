@@ -1,7 +1,9 @@
 import usePokedexStore from "../store/usePokedexStore.js";
 import pokeballImg from "@/assets/pokeball.webp";
+import dexicon from "@/assets/dexicon.png";
 import { debounce } from "@/utils.js";
 import { useEffect, useMemo, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Icons
 import X from "./icons/X.jsx";
@@ -15,6 +17,8 @@ import ArrowDownZA from "./icons/ArrowDownZA.jsx";
 import styles from "./Layout.module.css";
 
 function PokedexHeader({ className }) {
+  const navigate = useNavigate();
+
   const TOTAL_POKEMON = 1025;
 
   const pokemonCount = usePokedexStore((state) => state.pokemonCount);
@@ -52,11 +56,13 @@ function PokedexHeader({ className }) {
       value: "alphabetical-reverse",
       icon: <ArrowDownZA className="w-6 sm:w-4 md:w-4 lg:w-6" />,
     },
-  ]
+  ];
 
   const sortIcon = useMemo(() => {
-    return buttons.find((btn) => btn.value === sortType)?.icon || (
-      <AlignLeft className="w-6 sm:w-4 md:w-4 lg:w-6" />
+    return (
+      buttons.find((btn) => btn.value === sortType)?.icon || (
+        <AlignLeft className="w-6 sm:w-4 md:w-4 lg:w-6" />
+      )
     );
   }, [sortType]);
 
@@ -100,15 +106,17 @@ function PokedexHeader({ className }) {
       className={`items-center z-10 ${className} ${styles.background} border-b-4 border-pokemon-yellow`}
     >
       <div className="py-3 sm:py-1 flex flex-row justify-between items-center px-8">
-        <div className="chip">
-          <img
-            src={pokeballImg}
-            alt="Pokeball Icon"
-            className="w-6 sm:w-4 md:w-4 lg:w-6"
-          />
-          <p className="text-base md:text-base">
-            {pokemonCount} / {TOTAL_POKEMON}
-          </p>
+        <div className="flex flex-row items-center gap-4">
+          <div className="chip">
+            <img
+              src={pokeballImg}
+              alt="Pokeball Icon"
+              className="w-6 sm:w-4 md:w-4 lg:w-6"
+            />
+            <p className="text-base md:text-base">
+              {pokemonCount} / {TOTAL_POKEMON}
+            </p>
+          </div>
         </div>
         <div className="flex flex-row items-center gap-2">
           <div className="relative chip">
@@ -167,7 +175,7 @@ function PokedexHeader({ className }) {
                   key={btn.value}
                   className={`chip cursor-pointer ${
                     btn.value === sortType ? "bg-gray-600" : ""
-                  } md:w-24 justify-start` }
+                  } md:w-24 justify-start`}
                   onClick={() => {
                     setSortType(btn.value);
                     setShowSortOptions(false);
