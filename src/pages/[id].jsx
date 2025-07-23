@@ -81,13 +81,17 @@ function PokemonDetails({ className = "" }) {
     (state) => state.setPokemonSelected
   );
 
+  const spriteShown = usePokedexStore((state) => state.spriteShown);
+  const setSpriteShown = usePokedexStore((state) => state.setSpriteShown);
+
   const location = useLocation();
   const navigate = useNavigate();
 
   const numberLocation = parseInt(location.pathname.split("/pokedex/").pop());
-  // const [color1, setColor1] = useState("#ffffff");
-  // const [color2, setColor2] = useState("#ffffff");
+  const [color1, setColor1] = useState("#ffffff");
+  const [color2, setColor2] = useState("#ffffff");
   const [textColor, setTextColor] = useState("text-white");
+  const [cleanFlavorText, setCleanFlavorText] = useState("");
 
   useEffect(() => {
     if (!pokemonSelected) {
@@ -96,6 +100,7 @@ function PokemonDetails({ className = "" }) {
   }, [pokemonSelected]);
 
   useEffect(() => {
+    setSpriteShown("front_default");
     if (
       numberLocation >= 1 &&
       numberLocation <= 1025 &&
@@ -105,22 +110,59 @@ function PokemonDetails({ className = "" }) {
     }
   }, [numberLocation]);
 
-  // useEffect(() => {
-  //   if (!pokemonData?.sprites?.other?.home?.front_default) return;
+  useEffect(() => {
+    if (!pokemonData?.sprites?.other?.home?.front_default) return;
 
-  //   Vibrant.from(pokemonData.sprites.other.home.front_default)
-  //     .getPalette()
-  //     .then((palette) => {
-  //       console.log("Vibrant palette:", palette);
-  //       const Vibrant = palette.Vibrant?.hex || "#000000";
-  //       const Muted = palette.Muted?.hex || "#ffffff";
-  //       const contrastText = getContrastText(Vibrant);
-  //       setTextColor(contrastText > 0.5 ? "text-black" : "text-white");
-  //       setColor1(Vibrant);
-  //       setColor2(Muted);
-  //     })
-  //     .catch((err) => console.error("Vibrant error:", err));
-  // }, [pokemonData]);
+    Vibrant.from(pokemonData.sprites.other.home.front_default)
+      .getPalette()
+      .then((palette) => {
+        // console.log("Vibrant palette:", palette);
+        const Vibrant = palette.Vibrant?.hex || "#000000";
+        const Muted = palette.Muted?.hex || "#ffffff";
+        const contrastText = getContrastText(Vibrant);
+        setTextColor(contrastText > 0.5 ? "text-black" : "text-white");
+        setColor1(Vibrant);
+        setColor2(Muted);
+      })
+      .catch((err) => console.error("Vibrant error:", err));
+  }, [pokemonData]);
+
+  useEffect(() => {
+    if (speciesData) {
+      const name = pokemonData.name || "";
+      if (name.includes("-alola")) {
+        setCleanFlavorText(
+          speciesData.flavor_text_entries
+            ?.find((entry) => entry.language.name === "en" && entry.version.name === "ultra-sun")
+            ?.flavor_text.replace(/\f/g, " ") || ""
+        );
+      } else if (name.includes("-galar")) {
+        setCleanFlavorText(
+          speciesData.flavor_text_entries
+            ?.find((entry) => entry.language.name === "en" && entry.version.name === "sword")
+            ?.flavor_text.replace(/\f/g, " ") || ""
+        );
+      } else if (name.includes("-hisui")) {
+        setCleanFlavorText(
+          speciesData.flavor_text_entries
+            ?.find((entry) => entry.language.name === "en" && entry.version.name === "legends-arceus")
+            ?.flavor_text.replace(/\f/g, " ") || ""
+        );
+      } else if (name.includes("-paldea")) {
+        setCleanFlavorText(
+          speciesData.flavor_text_entries
+            ?.find((entry) => entry.language.name === "en" && entry.version.name === "paldea")
+            ?.flavor_text.replace(/\f/g, " ") || ""
+        );
+      } else {
+        setCleanFlavorText(
+          speciesData.flavor_text_entries
+            ?.find((entry) => entry.language.name === "en")
+            ?.flavor_text.replace(/\f/g, " ") || ""
+        );
+      }
+    }
+  }, [speciesData]);
 
   if (loading)
     return (
@@ -130,11 +172,6 @@ function PokemonDetails({ className = "" }) {
     );
   if (error) return <p>Error: {error.message}</p>;
   if (!pokemonData || !speciesData) return null;
-
-  const cleanFlavorText =
-    speciesData.flavor_text_entries
-      ?.find((entry) => entry.language.name === "en")
-      ?.flavor_text.replace(/\f/g, " ") || "";
 
   const genera =
     speciesData.genera?.find((g) => g.language.name === "en")?.genus ||
@@ -148,13 +185,13 @@ function PokemonDetails({ className = "" }) {
       <DetailsHeader className="w-full fixed top-0" />
       <div
         className={`${className} overflow-hidden h-full flex flex-row justify-center items-center px-2`}
-        // style={{
-        //   background: `linear-gradient(to bottom, ${color1}, ${color2})`,
-        // }}
+        style={{
+          background: `linear-gradient(to bottom, ${color1}, ${color2})`,
+        }}
       >
         <button
-        className="chip h-1/2 disabled:opacity-50 disabled:cursor-not-allowed"
-        disabled={pokemonSelected <= 1}
+          className="chip h-1/2 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={pokemonSelected <= 1}
           onClick={() => {
             const prevId = pokemonSelected - 1;
             if (prevId >= 1) {
@@ -170,7 +207,7 @@ function PokemonDetails({ className = "" }) {
           <div className={`${textColor}`}>
             <h2>No. {speciesData.id}</h2>
             <h1 className="text-3xl font-bold capitalize">
-              {pokemonData.name}
+              {speciesData.name}
             </h1>
             <h2>{genera}</h2>
 
@@ -190,9 +227,9 @@ function PokemonDetails({ className = "" }) {
               ))}
             </div>
 
-            <p className="text-xl">{cleanFlavorText}</p>
+            <p className="text-base md:text-base">{cleanFlavorText}</p>
 
-            <div className="flex flex-row items-center gap-2 mt-2">
+            <div className="flex flex-row items-center gap-2 mt-2 md:text-base">
               <span className="font-bold">Height:</span>
               <span>{height} m</span>
               <span className="font-bold">Weight:</span>
@@ -201,15 +238,15 @@ function PokemonDetails({ className = "" }) {
           </div>
 
           <img
-            src={pokemonData.sprites.other.home.front_default}
+            src={`${pokemonData.sprites.other.home[spriteShown]}`}
             alt={pokemonData.name}
             className={`max-w-48 max-h-48 object-contain ${styles.silueta}`}
           />
         </div>
 
         <button
-        className="chip h-1/2 disabled:opacity-50 disabled:cursor-not-allowed"
-        disabled={pokemonSelected >= 1025}
+          className="chip h-1/2 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={pokemonSelected >= 1025}
           onClick={() => {
             const nextId = pokemonSelected + 1;
             if (nextId <= 1025) {
