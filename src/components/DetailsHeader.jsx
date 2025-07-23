@@ -105,7 +105,7 @@ function PokedexHeader({ className }) {
     <header
       className={`items-center z-10 ${className} ${styles.background} border-b-4 border-pokemon-yellow`}
     >
-      <div className="py-3 sm:py-1 flex flex-row items-center px-8 gap-4">
+      <div className="py-3 sm:py-1 flex flex-row items-center justify-between px-8 gap-4">
         <button
           className="chip overflow-hidden h-auto p-1 px-2"
           onClick={() => navigate("/pokedex")}
