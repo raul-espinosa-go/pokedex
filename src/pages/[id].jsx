@@ -8,8 +8,8 @@ import styles from "./Details.module.css";
 import { getContrastText } from "../utils.js";
 
 import DetailsHeader from "@/components/DetailsHeader.jsx";
-import ArrowLeft from "@/components/icons/ArrowLeft.jsx";
-import ArrowRight from "@/components/icons/ArrowRight.jsx";
+import ChevronLeft from "@/components/icons/ChevronLeft.jsx";
+import ChevronRight from "@/components/icons/ChevronRight.jsx";
 
 // Type icons
 import Bug from "@/assets/types/bug.svg";
@@ -147,12 +147,14 @@ function PokemonDetails({ className = "" }) {
     <>
       <DetailsHeader className="w-full fixed top-0" />
       <div
-        className={`${className} overflow-hidden h-full flex flex-row justify-center`}
+        className={`${className} overflow-hidden h-full flex flex-row justify-center items-center px-2`}
         // style={{
         //   background: `linear-gradient(to bottom, ${color1}, ${color2})`,
         // }}
       >
         <button
+        className="chip h-1/2 disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={pokemonSelected <= 1}
           onClick={() => {
             const prevId = pokemonSelected - 1;
             if (prevId >= 1) {
@@ -161,7 +163,7 @@ function PokemonDetails({ className = "" }) {
             }
           }}
         >
-          <ArrowLeft />
+          <ChevronLeft />
         </button>
 
         <div className="flex flex-row items-center gap-4 p-4 ml-4">
@@ -206,6 +208,8 @@ function PokemonDetails({ className = "" }) {
         </div>
 
         <button
+        className="chip h-1/2 disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={pokemonSelected >= 1025}
           onClick={() => {
             const nextId = pokemonSelected + 1;
             if (nextId <= 1025) {
@@ -214,7 +218,7 @@ function PokemonDetails({ className = "" }) {
             }
           }}
         >
-          <ArrowRight />
+          <ChevronRight />
         </button>
       </div>
     </>
