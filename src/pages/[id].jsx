@@ -75,7 +75,8 @@ const typeIcons = {
 };
 
 function PokemonDetails({ className = "" }) {
-  const { pokemonData, speciesData, loading, error } = usePokemon();
+  const { pokemonData, speciesData, error } = usePokemon();
+  const loading = usePokedexStore((state) => state.loading);
   const pokemonSelected = usePokedexStore((state) => state.pokemonSelected);
   const setPokemonSelected = usePokedexStore(
     (state) => state.setPokemonSelected
