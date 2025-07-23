@@ -1,6 +1,5 @@
 import usePokedexStore from "../store/usePokedexStore.js";
 import pokeballImg from "@/assets/pokeball.webp";
-import dexicon from "@/assets/dexicon.png";
 import { debounce } from "@/utils.js";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,8 +16,6 @@ import ArrowDownZA from "./icons/ArrowDownZA.jsx";
 import styles from "./Layout.module.css";
 
 function PokedexHeader({ className }) {
-  const navigate = useNavigate();
-
   const TOTAL_POKEMON = 1025;
 
   const pokemonCount = usePokedexStore((state) => state.pokemonCount);

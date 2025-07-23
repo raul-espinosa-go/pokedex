@@ -10,8 +10,6 @@ import ArrowLeft from "@/components/icons/ArrowLeft.jsx";
 
 import styles from "./Layout.module.css";
 
-import dexicon from "@/assets/dexicon.png";
-
 function PokedexHeader({ className }) {
   const navigate = useNavigate();
   const [showSortOptions, setShowSortOptions] = useState(false);
