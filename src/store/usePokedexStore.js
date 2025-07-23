@@ -24,6 +24,9 @@ const usePokedexStore = create(
 
       spriteShown: "front_default",
       setSpriteShown: (sprite) => set({ spriteShown: sprite }),
+
+      loading: false,
+      setLoading: (loading) => set({ loading }),
     }),
     {
       name: "pokedex-storage",
