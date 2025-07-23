@@ -2,7 +2,6 @@ import usePokedexStore from "../store/usePokedexStore.js";
 import pokeballImg from "@/assets/pokeball.webp";
 import { debounce } from "@/utils.js";
 import { useEffect, useMemo, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 // Icons
 import X from "./icons/X.jsx";
