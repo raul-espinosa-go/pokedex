@@ -28,7 +28,8 @@ function App() {
           <Route
             path=":id"
             element={
-              <PokemonDetails className={`${styles["details-background"]}`} />
+              <PokemonDetails />
+              // <PokemonDetails className={`${styles["details-background"]}`} />
             }
           />
         </Route>
