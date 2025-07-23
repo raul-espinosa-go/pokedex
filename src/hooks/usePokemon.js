@@ -7,8 +7,10 @@ import usePokedexStore from "@/store/usePokedexStore.js";
 
 function usePokemon() {
   const pokemonSelected = usePokedexStore((state) => state.pokemonSelected);
+  const loading = usePokedexStore((state) => state.loading);
+  const setLoading = usePokedexStore((state) => state.setLoading);
 
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pokemonData, setPokemonData] = useState(null);
   const [speciesData, setSpeciesData] = useState(null);
