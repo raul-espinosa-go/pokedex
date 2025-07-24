@@ -34,7 +34,7 @@ function PokemonCard({ pokemon }) {
 
   return (
     <button
-      className={`${styles["card-background"]} ${styles["effect3D"]} flex flex-row items-center justify-between md:py-2`}
+      className={`${styles["card-background"]} ${styles["effect3D"]} flex flex-row items-center justify-between md:py-2 hover:-translate-y-4 transition-transform duration-300 ease-in-out`}
       onMouseDown={handleMouseDown}
       onClick={handleClick}
     >
