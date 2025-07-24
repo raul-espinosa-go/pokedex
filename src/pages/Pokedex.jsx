@@ -253,7 +253,7 @@ function PokedexList({ className }) {
         <div className={`flex flex-col items-center justify-center`}>
           <div
             ref={scrollContainerRef}
-            className="flex flex-row h-full gap-3 w-full overflow-x-auto px-8"
+            className="flex flex-row h-full gap-3 w-full overflow-x-auto px-8 lg:pt-6"
           >
             {visiblePokemon.map((pokemon) => (
               <PokemonCard key={pokemon.id} pokemon={pokemon} />
