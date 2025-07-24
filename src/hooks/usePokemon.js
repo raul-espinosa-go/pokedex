@@ -12,7 +12,6 @@ function usePokemon(pokemonId) {
   const setPokemonVarieties = usePokedexStore(
     (state) => state.setPokemonVarieties
   );
-  const pokemonData = usePokedexStore((state) => state.pokemonData);
 
   const [error, setError] = useState(null);
 
@@ -57,6 +56,9 @@ function usePokemon(pokemonId) {
 
               try {
                 const varietyData = await getPokemonById(id);
+                console.log(varietyData);
+
+                if(!varietyData.sprites?.other?.home.front_default) return;
 
                 if (v.pokemon.name.includes("-female")) {
                   const femaleSprites = varietyData.sprites?.other?.home;
