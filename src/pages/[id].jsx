@@ -191,13 +191,13 @@ function PokemonDetails({ className = "" }) {
     <>
       <DetailsHeader className="w-full fixed top-0" />
       <div
-        className={`${className} overflow-hidden h-full flex flex-row justify-center items-center px-2`}
+        className={`${className} overflow-hidden h-full flex flex-row justify-center items-center px-2 `}
         style={{
           background: `linear-gradient(to bottom, ${color1}, ${color2})`,
         }}
       >
         <button
-          className="chip h-1/2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="chip h-1/2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           disabled={pokemonSelected <= 1}
           onClick={() => {
             const prevId = pokemonSelected - 1;
@@ -206,36 +206,36 @@ function PokemonDetails({ className = "" }) {
             }
           }}
         >
-          <ChevronLeft />
+          <ChevronLeft className="text-base md:text-base lg:text-2xl" />
         </button>
 
-        <div className="flex flex-row items-center gap-4 p-4 ml-4">
+        <div className="flex flex-row items-center justify-between gap-4 p-4 lg:px-16 ml-4 w-full">
           <div className={`${textColor}`}>
-            <h2>No. {speciesData.id}</h2>
-            <h1 className="text-3xl font-bold capitalize">
+            <h2 className={`text-base md:text-base lg:text-2xl`}>No. {speciesData.id}</h2>
+            <h1 className="md:text-3xl lg:text-6xl font-bold capitalize">
               {speciesData.name}
             </h1>
-            <h2>{genera}</h2>
+            <h2 className="text-base md:text-base lg:text-2xl mb-2">{genera}</h2>
 
             <div className="flex items-center gap-2 mb-8">
               {types.map((type) => (
                 <div
                   key={type}
-                  className={`flex chip ${bgClassNames[type]} pr-4`}
+                  className={`flex chip ${bgClassNames[type]} md:pr-4 lg:pr-6 md:py-1 lg:py-2 flex-row items-center gap-1 text-white`}
                 >
                   <img
                     src={typeIcons[type]}
                     alt={type}
-                    className="w-6 h-6 mr-1"
+                    className="md:w-6 md:h-6 lg:w-8 lg:h-8 mr-1"
                   />
-                  <span className="uppercase">{type}</span>
+                  <span className="uppercase md:text-base lg:text-2xl">{type}</span>
                 </div>
               ))}
             </div>
 
-            <p className="text-base md:text-base">{cleanFlavorText}</p>
+            <p className="text-base md:text-base lg:text-2xl">{cleanFlavorText}</p>
 
-            <div className="flex flex-row items-center gap-2 mt-2 md:text-base">
+            <div className="flex flex-row items-center gap-2 mt-2 md:text-base lg:text-2xl">
               <span className="font-bold">Height:</span>
               <span>{height} m</span>
               <span className="font-bold">Weight:</span>
@@ -247,13 +247,13 @@ function PokemonDetails({ className = "" }) {
             <img
               src={spriteBase[spriteShown.value]}
               alt={pokemonData.name}
-              className={`max-w-48 max-h-48 object-contain ${styles.silueta}`}
+              className={`md:max-h-48 lg:max-h-lvw object-contain ${styles.silueta}`}
             />
           )}
         </div>
 
         <button
-          className="chip h-1/2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="chip h-1/2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           disabled={pokemonSelected >= 1025}
           onClick={() => {
             const nextId = pokemonSelected + 1;
@@ -262,7 +262,7 @@ function PokemonDetails({ className = "" }) {
             }
           }}
         >
-          <ChevronRight />
+          <ChevronRight className="text-base md:text-base lg:text-2xl" />
         </button>
       </div>
     </>

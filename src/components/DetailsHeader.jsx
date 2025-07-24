@@ -8,6 +8,7 @@ import Sparkles from "@/components/icons/Sparkles.jsx";
 import Venus from "@/components/icons/Venus.jsx";
 import ArrowLeft from "@/components/icons/ArrowLeft.jsx";
 import ChevronsDown from "@/components/icons/ChevronsDown.jsx";
+import Fullscreen from "@/components/icons/Fullscreen.jsx";
 
 import styles from "./Layout.module.css";
 
@@ -75,18 +76,18 @@ function DetailsHeader({ className }) {
       genderButtons.push(
         {
           value: "front_default",
-          icon: <Mars className="w-4 h-4 bg-[#4375DF] rounded-full" />,
+          icon: <Mars className="text-base md:text-base lg:text-2xl bg-[#4375DF] rounded-full" />,
         },
         {
           value: "front_female",
-          icon: <Venus className="w-4 h-4 bg-[#ED4C4D] rounded-full" />,
+          icon: <Venus className="text-base md:text-base lg:text-2xl bg-[#ED4C4D] rounded-full" />,
         },
         {
           value: "front_shiny",
           icon: (
             <div className="flex items-center gap-1">
-              <Mars className="w-4 h-4 bg-[#4375DF] rounded-full" />
-              <Sparkles className="w-4 h-4" />
+              <Mars className="text-base md:text-base lg:text-2xl bg-[#4375DF] rounded-full" />
+              <Sparkles className="text-base md:text-base lg:text-2xl" />
             </div>
           ),
         },
@@ -94,8 +95,8 @@ function DetailsHeader({ className }) {
           value: "front_shiny_female",
           icon: (
             <div className="flex items-center gap-1">
-              <Venus className="w-4 h-4 bg-[#ED4C4D] rounded-full" />
-              <Sparkles className="w-4 h-4" />
+              <Venus className="text-base md:text-base lg:text-2xl bg-[#ED4C4D] rounded-full" />
+              <Sparkles className="text-base md:text-base lg:text-2xl" />
             </div>
           ),
         }
@@ -106,8 +107,8 @@ function DetailsHeader({ className }) {
           value: "front_default",
           icon: (
             <div className="flex items-center gap-1">
-              <Mars className="w-4 h-4 bg-[#4375DF] rounded-full" />
-              <Venus className="w-4 h-4 bg-[#ED4C4D] rounded-full" />
+              <Mars className="text-base md:text-base lg:text-2xl bg-[#4375DF] rounded-full" />
+              <Venus className="text-base md:text-base lg:text-2xl bg-[#ED4C4D] rounded-full" />
             </div>
           ),
         },
@@ -115,9 +116,9 @@ function DetailsHeader({ className }) {
           value: "front_shiny",
           icon: (
             <div className="flex items-center gap-1">
-              <Mars className="w-4 h-4 bg-[#4375DF] rounded-full" />
-              <Venus className="w-4 h-4 bg-[#ED4C4D] rounded-full" />
-              <Sparkles className="w-4 h-4" />
+              <Mars className="text-base md:text-base lg:text-2xl bg-[#4375DF] rounded-full" />
+              <Venus className="text-base md:text-base lg:text-2xl bg-[#ED4C4D] rounded-full" />
+              <Sparkles className="text-base md:text-base lg:text-2xl" />
             </div>
           ),
         }
@@ -138,6 +139,31 @@ function DetailsHeader({ className }) {
     }),
   ];
 
+  const setFullscreen = () => {
+    const elem = document.documentElement;
+
+    // Verifica si el navegador soporta el modo pantalla completa
+    if (!document.fullscreenEnabled) {
+      console.warn(
+        "⚠️ Pantalla completa no soportada o bloqueada por políticas."
+      );
+      return;
+    }
+
+    // Si ya estamos en pantalla completa, salir
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch((err) => {
+        console.error("❌ Error al salir de pantalla completa:", err.message);
+      });
+      return;
+    }
+
+    // Si no estamos en pantalla completa, entrar
+    elem.requestFullscreen().catch((err) => {
+      console.error("❌ Error al activar pantalla completa:", err.message);
+    });
+  };
+
   return (
     <header
       className={`items-center z-10 ${className} ${styles.background} border-b-4 border-pokemon-yellow`}
@@ -145,21 +171,21 @@ function DetailsHeader({ className }) {
       <div className="py-3 sm:py-1 flex flex-row items-center justify-between px-8 gap-4">
         {/* Back Button */}
         <button
-          className="chip overflow-hidden h-auto p-1 px-2"
+          className="chip overflow-hidden h-auto p-1 px-2 lg:px-4 lg:py-2 cursor-pointer"
           onClick={() => navigate("/pokedex")}
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="text-base md:text-base lg:text-2xl" />
         </button>
 
         {/* Variety Dropdown */}
         <div ref={triggerRef2} className="relative variety-menu-trigger w-fit">
           {pokemonVarieties.length > 0 && (
             <button
-              className="chip px-2 md:min-w-32 w-fit justify-start"
+              className="chip px-2 md:min-w-32 w-fit justify-start cursor-pointer lg:px-4 lg:py-2"
               onClick={() => setShowVarietyOptions((prev) => !prev)}
             >
-              <ChevronsDown className="w-5 h-5" />
-              <span className="text-base capitalize whitespace-nowrap">
+              <ChevronsDown className="text-base md:text-base lg:text-2xl" />
+              <span className="text-base capitalize whitespace-nowrap text-base md:text-base lg:text-xl">
                 {
                   varietyButtons.find((btn) => btn.value === varietySelected)
                     ?.label
@@ -177,13 +203,13 @@ function DetailsHeader({ className }) {
                   key={btn.value}
                   className={`chip cursor-pointer ${
                     btn.value === varietySelected ? "bg-gray-600" : ""
-                  } justify-start px-2 w-fit min-w-full md:min-w-48`}
+                  } justify-start px-2 w-fit min-w-full md:min-w-48 lg:px-4 lg:py-2`}
                   onClick={() => {
                     setVarietySelected(btn.value);
                     setShowVarietyOptions(false);
                   }}
                 >
-                  <span className="text-base capitalize whitespace-nowrap">
+                  <span className="capitalize whitespace-nowrap text-base md:text-base lg:text-xl">
                     {btn.label}
                   </span>
                 </button>
@@ -193,37 +219,49 @@ function DetailsHeader({ className }) {
         </div>
 
         {/* Gender Dropdown */}
-        <div ref={triggerRef} className="relative sort-menu-trigger w-fit">
-          <button
-            className="chip cursor-pointer w-18 justify-start p-1"
-            onClick={() => setGenderOptions((prev) => !prev)}
-          >
-            {genderButtons.find((btn) => btn.value === spriteValue)?.icon ||
-              null}
-          </button>
-
-          {genderOptions && (
-            <div
-              ref={panelRef}
-              className="absolute w-full right-0 mt-2 flex flex-col gap-2 z-30 sort-menu-panel"
+        <div
+          ref={triggerRef}
+          className="sort-menu-trigger w-fit flex flex-row items-center gap-2"
+        >
+          <div className="relative">
+            <button
+              className="chip cursor-pointer w-18 lg:w-fit lg:min-w-32 justify-start p-1 px-2 md:px-4 lg:px-6 lg:py-2"
+              onClick={() => setGenderOptions((prev) => !prev)}
             >
-              {genderButtons.map((btn) => (
-                <button
-                  key={btn.value}
-                  className={`chip cursor-pointer ${
-                    btn.value === spriteValue ? "bg-gray-600" : ""
-                  } md:w-18 justify-start p-1`}
-                  onClick={() => {
-                    setSpriteValue(btn.value);
-                    setGenderOptions(false);
-                  }}
-                >
-                  {btn.icon}
-                  <span className="text-base">{btn.label}</span>
-                </button>
-              ))}
-            </div>
-          )}
+              {genderButtons.find((btn) => btn.value === spriteValue)?.icon ||
+                null}
+            </button>
+
+            {genderOptions && (
+              <div
+                ref={panelRef}
+                className="absolute w-full right-0 mt-2 flex flex-col gap-2 z-30 items-end sort-menu-panel"
+              >
+                {genderButtons.map((btn) => (
+                  <button
+                    key={btn.value}
+                    className={`chip cursor-pointer ${
+                      btn.value === spriteValue ? "bg-gray-600" : ""
+                    } md:w-18 justify-start p-1 px-2 w-18 lg:w-fit lg:min-w-32 lg:px-4 lg:py-2`}
+                    onClick={() => {
+                      setSpriteValue(btn.value);
+                      setGenderOptions(false);
+                    }}
+                  >
+                    {btn.icon}
+                    <span className="text-base">{btn.label}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button
+            className="hidden sm:flex md:flex lg:hidden chip cursor-pointer px-2 py-1"
+            onClick={setFullscreen}
+          >
+            <Fullscreen className="text-base md:text-base lg:text-2xl cursor-pointer" />
+          </button>
         </div>
       </div>
     </header>

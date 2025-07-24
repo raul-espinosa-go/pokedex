@@ -250,7 +250,7 @@ function PokedexList({ className }) {
       <div
         className={`${className} overflow-hidden h-full flex flex-col justify-center`}
       >
-        <div className={`flex flex-col items-center justify-center`}>
+        <div className={`flex flex-col items-center justify-center h-dvh py-16`}>
           <div
             ref={scrollContainerRef}
             className="flex flex-row h-full gap-3 w-full overflow-x-auto px-8 lg:pt-6"

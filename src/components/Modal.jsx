@@ -18,7 +18,7 @@ function Modal({ children, isOpen, onClose }) {
                 onClick={(e) => e.stopPropagation()}
             >
                 <button
-                    className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+                    className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 cursor-pointer"
                     onClick={onClose}
                 >
                     <X />

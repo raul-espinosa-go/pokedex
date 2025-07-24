@@ -23,7 +23,7 @@ function Footer({ className }) {
           </h2>
           <p className="mb-4">
             This application is for educational purposes, showcasing my
-            knowledge of React, Vite, and Tailwind CSS. It is not affiliated
+            knowledge of React, Vite, Tailwind CSS and GSAP. It is not affiliated
             with the official Pokémon API or any Pokémon entities.
           </p>
           <p>
@@ -55,7 +55,7 @@ function Footer({ className }) {
           <a
             href="https://github.com/raul-espinosa-go/pokedex"
             target="_blank"
-            className="chip cursor-pointer"
+            className="chip cursor-pointer lg:w-fit lg:px-4 lg:py-2 justify-start"
           >
             <div className="">
               <img
@@ -64,12 +64,12 @@ function Footer({ className }) {
                 className="w-4 sm:w-4 md:w-4 lg:w-6"
               />
             </div>
-            <p className="text-base md:text-base">Github</p>
+            <p className="text-base md:text-base lg:text-xl">Github</p>
           </a>
           <a
             href="https://www.linkedin.com/in/raulespinosagomez/"
             target="_blank"
-            className="chip cursor-pointer"
+            className="chip cursor-pointer lg:w-fit lg:px-4 lg:py-2 justify-start"
           >
             <div className="">
               <img
@@ -78,14 +78,14 @@ function Footer({ className }) {
                 className="w-4 sm:w-4 md:w-4 lg:w-6"
               />
             </div>
-            <p className="text-base md:text-base">Linkedin</p>
+            <p className="text-base md:text-base lg:text-xl">Linkedin</p>
           </a>
           <button
-            className="chip cursor-pointer"
+            className="chip cursor-pointer lg:w-fit lg:px-4 lg:py-2 flex flex-row items-center gap-2"
             onClick={() => setIsOpen(true)}
           >
-            <Info className="w-4 h-4 md:w-5 md:h-5 cursor-pointer" />
-            <p className="text-base md:text-base">Info</p>
+            <Info className="text-base md:text-base lg:text-2xl cursor-pointer" />
+            <p className="text-base md:text-base lg:text-xl">Info</p>
           </button>
         </div>
       </footer>

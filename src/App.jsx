@@ -41,9 +41,9 @@ function App() {
         <Footer className="w-full fixed bottom-0" />
       )}
 
-      {showLoader && (
+      {/* {showLoader && (
         <Loader onComplete={() => setShowLoader(false)} show={loading} />
-      )}
+      )} */}
     </main>
   );
 }
