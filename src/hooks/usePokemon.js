@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   getPokemonById,
   getPokemonSpeciesById,
+  // getPokemonFormById,
 } from "@/services/pokeapi.service";
 import usePokedexStore from "@/store/usePokedexStore.js";
 
@@ -10,27 +11,34 @@ function usePokemon() {
   const loading = usePokedexStore((state) => state.loading);
   const setLoading = usePokedexStore((state) => state.setLoading);
 
-  // const [loading, setLoading] = useState(true);
+  const pokemonData = usePokedexStore((state) => state.pokemonData);
+  const setPokemonData = usePokedexStore((state) => state.setPokemonData);
+  const speciesData = usePokedexStore((state) => state.speciesData);
+  const setSpeciesData = usePokedexStore((state) => state.setSpeciesData);
+  // const pokemonVarieties = usePokedexStore((state) => state.pokemonVarieties);
+  const setPokemonVarieties = usePokedexStore(
+    (state) => state.setPokemonVarieties
+  );
+
   const [error, setError] = useState(null);
-  const [pokemonData, setPokemonData] = useState(null);
-  const [speciesData, setSpeciesData] = useState(null);
 
   // Leer desde localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem("selectedPokemon");
-    if (!saved) return;
+  // useEffect(() => {
+  //   const saved = localStorage.getItem("pokemonData");
+  //   if (!saved) return;
 
-    try {
-      const parsed = JSON.parse(saved);
-      if (parsed.id === pokemonSelected) {
-        setPokemonData(parsed.data);
-        setSpeciesData(parsed.species);
-        setLoading(false); // Ya tenemos datos listos
-      }
-    } catch (err) {
-      console.warn("No se pudo leer el Pokémon guardado:", err);
-    }
-  }, [pokemonSelected]);
+  //   try {
+  //     const parsed = JSON.parse(saved);
+  //     if (parsed.id === pokemonSelected) {
+  //       setPokemonData(parsed.data);
+  //       setSpeciesData(parsed.species);
+  //       setPokemonVarieties(parsed.varieties || null);
+  //       setLoading(false); // Ya tenemos datos listos
+  //     }
+  //   } catch (err) {
+  //     console.warn("No se pudo leer el Pokémon guardado:", err);
+  //   }
+  // }, [pokemonSelected]);
 
   // Hacer fetch solo si no hay datos o queremos refrescar
   useEffect(() => {
@@ -40,27 +48,60 @@ function usePokemon() {
       setLoading(true);
       setError(null);
       try {
-        const [pokemon, species] = await Promise.all([
-          getPokemonById(pokemonSelected),
-          getPokemonSpeciesById(pokemonSelected),
-        ]);
+        const pokemon = await getPokemonById(pokemonSelected);
+        let species = speciesData;
+
+        if (pokemonSelected > 0 && pokemonSelected < 1025) {
+          species = await getPokemonSpeciesById(pokemonSelected);
+        }
+
+        const notPermittedVarieties = [
+          "mega",
+          "gmax",
+          "cap",
+          "star",
+          "totem",
+          "belle",
+          "phd",
+          "libre",
+          "cosplay",
+        ];
+
+        let results = [];
+
+        if (species.varieties && species.varieties.length > 1) {
+          const filteredVarieties = species.varieties.filter(
+            (v) =>
+              !v.is_default &&
+              !notPermittedVarieties.some((name) =>
+                v.pokemon.name.includes(name)
+              )
+          );
+
+          // Peticiones paralelas a getPokemonById
+          const fetchedVarieties = await Promise.all(
+            filteredVarieties.map(async (v) => {
+              const match = v.pokemon.url.match(/\/pokemon\/(\d+)\//);
+              const id = match ? parseInt(match[1], 10) : null;
+              if (!id) return null;
+
+              try {
+                const data = await getPokemonById(id);
+                return data;
+              } catch (e) {
+                console.warn(`Error al obtener variedad ${id}:`, e);
+                return null;
+              }
+            })
+          );
+
+          results = fetchedVarieties.filter((v) => v !== null);
+        }
 
         setPokemonData(pokemon);
         setSpeciesData(species);
+        setPokemonVarieties(results);
 
-        // console.log("Pokemon data fetched:", pokemon);
-        // console.log("Species data fetched:", species);
-
-        // Guardar en localStorage
-        localStorage.setItem(
-          "pokemonData",
-          JSON.stringify({
-            id: pokemonSelected,
-            data: pokemon,
-            species: species,
-            timestamp: Date.now(),
-          })
-        );
       } catch (err) {
         setError(err);
       } finally {
@@ -75,8 +116,6 @@ function usePokemon() {
   }, [pokemonSelected]);
 
   return {
-    pokemonData,
-    speciesData,
     loading,
     error,
   };

@@ -75,12 +75,14 @@ const typeIcons = {
 };
 
 function PokemonDetails({ className = "" }) {
-  const { pokemonData, speciesData, error } = usePokemon();
+  const { error } = usePokemon();
   const loading = usePokedexStore((state) => state.loading);
   const pokemonSelected = usePokedexStore((state) => state.pokemonSelected);
   const setPokemonSelected = usePokedexStore(
     (state) => state.setPokemonSelected
   );
+  const pokemonData = usePokedexStore((state) => state.pokemonData);
+  const speciesData = usePokedexStore((state) => state.speciesData);
 
   const spriteShown = usePokedexStore((state) => state.spriteShown);
   const setSpriteShown = usePokedexStore((state) => state.setSpriteShown);
@@ -134,25 +136,39 @@ function PokemonDetails({ className = "" }) {
       if (name.includes("-alola")) {
         setCleanFlavorText(
           speciesData.flavor_text_entries
-            ?.find((entry) => entry.language.name === "en" && entry.version.name === "ultra-sun")
+            ?.find(
+              (entry) =>
+                entry.language.name === "en" &&
+                entry.version.name === "ultra-sun"
+            )
             ?.flavor_text.replace(/\f/g, " ") || ""
         );
       } else if (name.includes("-galar")) {
         setCleanFlavorText(
           speciesData.flavor_text_entries
-            ?.find((entry) => entry.language.name === "en" && entry.version.name === "sword")
+            ?.find(
+              (entry) =>
+                entry.language.name === "en" && entry.version.name === "sword"
+            )
             ?.flavor_text.replace(/\f/g, " ") || ""
         );
       } else if (name.includes("-hisui")) {
         setCleanFlavorText(
           speciesData.flavor_text_entries
-            ?.find((entry) => entry.language.name === "en" && entry.version.name === "legends-arceus")
+            ?.find(
+              (entry) =>
+                entry.language.name === "en" &&
+                entry.version.name === "legends-arceus"
+            )
             ?.flavor_text.replace(/\f/g, " ") || ""
         );
       } else if (name.includes("-paldea")) {
         setCleanFlavorText(
           speciesData.flavor_text_entries
-            ?.find((entry) => entry.language.name === "en" && entry.version.name === "paldea")
+            ?.find(
+              (entry) =>
+                entry.language.name === "en" && entry.version.name === "paldea"
+            )
             ?.flavor_text.replace(/\f/g, " ") || ""
         );
       } else {
@@ -171,7 +187,7 @@ function PokemonDetails({ className = "" }) {
         <p>Loading...</p>
       </div>
     );
-  if (error) return <p>Error: {error.message}</p>;
+  if (error) return <p className="bg-red-500">Error: {error.message}</p>;
   if (!pokemonData || !speciesData) return null;
 
   const genera =
@@ -238,11 +254,18 @@ function PokemonDetails({ className = "" }) {
             </div>
           </div>
 
-          <img
-            src={`${pokemonData.sprites.other.home[spriteShown]}`}
-            alt={pokemonData.name}
-            className={`max-w-48 max-h-48 object-contain ${styles.silueta}`}
-          />
+          <div className={`relative`}>
+            <img
+              src={`${pokemonData.sprites.other.home[spriteShown]}`}
+              alt={pokemonData.name}
+              className={`max-w-48 max-h-48 object-contain ${styles.silueta} `}
+            />
+            {/* <img
+              src={`${pokemonData.sprites.other.showdown[spriteShown]}`}
+              alt={pokemonData.name}
+              className={`max-w-12 max-h-12 object-contain ${styles.silueta} absolute bottom-0 left-4`}
+            /> */}
+          </div>
         </div>
 
         <button

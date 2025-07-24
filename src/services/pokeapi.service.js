@@ -21,3 +21,13 @@ export async function getPokemonSpeciesById(id) {
     throw error;
   }
 }
+
+export async function getPokemonFormById(id) {
+  try {
+    const response = await axios.get(`${BASE_URL}/pokemon-form/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching Pokemon form by ID:", error);
+    throw error;
+  }
+}

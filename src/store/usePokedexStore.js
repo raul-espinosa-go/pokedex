@@ -5,7 +5,10 @@ const usePokedexStore = create(
   persist(
     (set) => ({
       pokemonSelected: null,
-      setPokemonSelected: (pokemonId) => set({ pokemonSelected: pokemonId }),
+      setPokemonSelected: (pokemon) => set({ pokemonSelected: pokemon }),
+
+      pokemonVarieties: [],
+      setPokemonVarieties: (variants) => set({ pokemonVarieties: variants }),
 
       pokemonCount: 30,
       setPokemonCount: (countOrUpdater) =>
@@ -15,6 +18,12 @@ const usePokedexStore = create(
               ? countOrUpdater(state.pokemonCount)
               : countOrUpdater,
         })),
+
+      pokemonData: null,
+      setPokemonData: (data) => set({ pokemonData: data }),
+
+      speciesData: null,
+      setSpeciesData: (data) => set({ speciesData: data }),
 
       filter: "",
       setFilter: (filter) => set({ filter }),
@@ -32,7 +41,10 @@ const usePokedexStore = create(
       name: "pokedex-storage",
       partialize: (state) => ({
         pokemonSelected: state.pokemonSelected,
-        filter: state.filter,
+        pokemonData: state.pokemonData,
+        speciesData: state.speciesData,
+        pokemonVariants: state.pokemonVariants,
+        // filter: state.filter,
         sortType: state.sortType,
         spriteShown: state.spriteShown,
       }),

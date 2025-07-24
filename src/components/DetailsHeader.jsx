@@ -13,17 +13,21 @@ import styles from "./Layout.module.css";
 function PokedexHeader({ className }) {
   const navigate = useNavigate();
   const [showSortOptions, setShowSortOptions] = useState(false);
-  const pokemonData = localStorage.getItem("pokemonData");
-  const sprites = pokemonData
-    ? JSON.parse(pokemonData).data.sprites.other.home
-    : null;
-  // const [spriteShown, setSpriteShown] = useState("front_default");
+  const [showVarietyOptions, setShowVarietyOptions] = useState(false);
+  const pokemonData = usePokedexStore((state) => state.pokemonData);
+  const sprites = pokemonData ? pokemonData.sprites.other.home : null;
+  const setPokemonSelected = usePokedexStore(
+    (state) => state.setPokemonSelected
+  );
   const spriteShown = usePokedexStore((state) => state.spriteShown);
   const setSpriteShown = usePokedexStore((state) => state.setSpriteShown);
+  const pokemonVarieties = usePokedexStore((state) => state.pokemonVarieties);
   const triggerRef = useRef(null);
+  const triggerRef2 = useRef(null);
   const panelRef = useRef(null);
+  const panelRef2 = useRef(null);
 
-  const buttons = [];
+  const genderButtons = [];
 
   if (sprites) {
     const { front_female: femaleSprite } = sprites;
@@ -31,17 +35,17 @@ function PokedexHeader({ className }) {
     const hasFemale = !!femaleSprite;
 
     if (hasFemale) {
-      buttons.push({
+      genderButtons.push({
         value: "front_default",
         icon: <Mars className="w-4 h-4 bg-[#4375DF] rounded-full " />,
       });
 
-      buttons.push({
+      genderButtons.push({
         value: "front_female",
         icon: <Venus className="w-4 h-4 bg-[#ED4C4D] rounded-full " />,
       });
 
-      buttons.push({
+      genderButtons.push({
         value: "front_shiny",
         icon: (
           <div className="flex items-center gap-1">
@@ -51,7 +55,7 @@ function PokedexHeader({ className }) {
         ),
       });
 
-      buttons.push({
+      genderButtons.push({
         value: "front_shiny_female",
         icon: (
           <div className="flex items-center gap-1">
@@ -61,7 +65,7 @@ function PokedexHeader({ className }) {
         ),
       });
     } else {
-      buttons.push({
+      genderButtons.push({
         value: "front_default",
         icon: (
           <div className="flex items-center gap-1">
@@ -71,7 +75,7 @@ function PokedexHeader({ className }) {
         ),
       });
 
-      buttons.push({
+      genderButtons.push({
         value: "front_shiny",
         icon: (
           <div className="flex items-center gap-1">
@@ -88,11 +92,14 @@ function PokedexHeader({ className }) {
     const handleClickOutside = (event) => {
       if (
         triggerRef.current?.contains(event.target) ||
-        panelRef.current?.contains(event.target)
+        panelRef.current?.contains(event.target) ||
+        triggerRef2.current?.contains(event.target) ||
+        panelRef2.current?.contains(event.target)
       ) {
         return;
       }
       setShowSortOptions(false);
+      setShowVarietyOptions(false);
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -100,6 +107,14 @@ function PokedexHeader({ className }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const varietyButtons = pokemonVarieties.map((variant) => {
+    console.log(`Variety button created: ${variant.name}`);
+    return {
+      value: variant.id,
+      label: variant.name,
+    };
+  });
 
   return (
     <header
@@ -112,12 +127,52 @@ function PokedexHeader({ className }) {
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
+        <div ref={triggerRef2} className="relative variety-menu-trigger w-fit">
+          {pokemonVarieties.length > 0 && (
+            <button
+              className="chip cursor-pointer w-32 md:w-32 justify-start p-1"
+              onClick={() => setShowVarietyOptions((prev) => !prev)}
+            >
+              <span className="text-base md:text-base">
+                {pokemonVarieties[0].name}
+              </span>
+            </button>
+          )}
+          {showVarietyOptions && (
+            <div
+              ref={panelRef2}
+              className="absolute w-full right-0 mt-2 flex flex-col gap-2 z-30 variety-menu-panel"
+            >
+              {varietyButtons.map((btn) => (
+                <button
+                  key={btn.value}
+                  className="chip cursor-pointer md:w-32 justify-start p-1"
+                  onClick={() => {
+                    const selectedVariety = pokemonVarieties.find(
+                      (v) => v.id === btn.value
+                    );
+                    if (selectedVariety) {
+                      setShowVarietyOptions(false);
+                    }
+                    console.log(`Button clicked: ${btn.value}`);
+                    setPokemonSelected(btn.value);
+                    navigate(`/pokedex/${btn.value}`);
+                  }}
+                >
+                  <span className="text-base md:text-base">{btn.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div ref={triggerRef} className="relative sort-menu-trigger w-fit">
           <button
             className="chip cursor-pointer w-18 md:w-18 justify-start p-1"
             onClick={() => setShowSortOptions((prev) => !prev)}
           >
-            {buttons.find((btn) => btn.value === spriteShown)?.icon || null}
+            {genderButtons.find((btn) => btn.value === spriteShown)?.icon ||
+              null}
           </button>
 
           {showSortOptions && (
@@ -125,7 +180,7 @@ function PokedexHeader({ className }) {
               ref={panelRef}
               className="absolute w-full right-0 mt-2 flex flex-col gap-2 z-30 sort-menu-panel"
             >
-              {buttons.map((btn) => (
+              {genderButtons.map((btn) => (
                 <button
                   key={btn.value}
                   className={`chip cursor-pointer ${
