@@ -31,7 +31,6 @@ import Rock from "@/assets/types/rock.svg";
 import Steel from "@/assets/types/steel.svg";
 import Water from "@/assets/types/water.svg";
 
-// Background classes and icon map
 const bgClassNames = {
   bug: "bg-type-bug",
   dark: "bg-type-dark",
@@ -75,7 +74,6 @@ const typeIcons = {
 };
 
 function PokemonDetails({ className = "" }) {
-  const { error } = usePokemon();
   const loading = usePokedexStore((state) => state.loading);
   const pokemonSelected = usePokedexStore((state) => state.pokemonSelected);
   const setPokemonSelected = usePokedexStore(
@@ -83,118 +81,111 @@ function PokemonDetails({ className = "" }) {
   );
   const pokemonData = usePokedexStore((state) => state.pokemonData);
   const speciesData = usePokedexStore((state) => state.speciesData);
-
+  const pokemonVarieties = usePokedexStore((state) => state.pokemonVarieties);
   const spriteShown = usePokedexStore((state) => state.spriteShown);
   const setSpriteShown = usePokedexStore((state) => state.setSpriteShown);
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const numberLocation = parseInt(location.pathname.split("/pokedex/").pop());
+  const [spriteBase, setSpriteBase] = useState(null);
   const [color1, setColor1] = useState("#ffffff");
   const [color2, setColor2] = useState("#ffffff");
   const [textColor, setTextColor] = useState("text-white");
   const [cleanFlavorText, setCleanFlavorText] = useState("");
+  const [types, setTypes] = useState([]);
+  const [height, setHeight] = useState(null);
+  const [weight, setWeight] = useState(null);
 
-  useEffect(() => {
-    if (!pokemonSelected) {
-      console.warn("No Pokémon selected");
-    }
-  }, [pokemonSelected]);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const numberLocation = parseInt(
+    location.pathname.split("/pokedex/").pop(),
+    10
+  );
 
+  const { error } = usePokemon(numberLocation); // Se activa automáticamente si pokemonSelected está definido
+
+  // Establecer el ID inicial al montar o cambiar la URL
   useEffect(() => {
-    setSpriteShown("front_default");
-    if (
-      numberLocation >= 1 &&
-      numberLocation <= 1025 &&
-      numberLocation !== pokemonSelected
-    ) {
-      setPokemonSelected(numberLocation);
-    }
+    setPokemonSelected(numberLocation);
   }, [numberLocation]);
 
+  // Resetear sprites al cambiar el Pokémon seleccionado
   useEffect(() => {
-    if (!pokemonData?.sprites?.other?.home?.front_default) return;
+    setSpriteBase(null);
+    setSpriteShown({ id: null, value: null });
+  }, [pokemonSelected]);
 
-    Vibrant.from(pokemonData.sprites.other.home.front_default)
-      .getPalette()
-      .then((palette) => {
-        // console.log("Vibrant palette:", palette);
-        const Vibrant = palette.Vibrant?.hex || "#000000";
-        const Muted = palette.Muted?.hex || "#ffffff";
-        const contrastText = getContrastText(Vibrant);
-        setTextColor(contrastText > 0.5 ? "text-black" : "text-white");
-        setColor1(Vibrant);
-        setColor2(Muted);
-      })
-      .catch((err) => console.error("Vibrant error:", err));
-  }, [pokemonData]);
-
+  // Establecer datos base y colores cuando llegan los datos
   useEffect(() => {
-    if (speciesData) {
-      const name = pokemonData.name || "";
-      if (name.includes("-alola")) {
-        setCleanFlavorText(
-          speciesData.flavor_text_entries
-            ?.find(
-              (entry) =>
-                entry.language.name === "en" &&
-                entry.version.name === "ultra-sun"
-            )
-            ?.flavor_text.replace(/\f/g, " ") || ""
-        );
-      } else if (name.includes("-galar")) {
-        setCleanFlavorText(
-          speciesData.flavor_text_entries
-            ?.find(
-              (entry) =>
-                entry.language.name === "en" && entry.version.name === "sword"
-            )
-            ?.flavor_text.replace(/\f/g, " ") || ""
-        );
-      } else if (name.includes("-hisui")) {
-        setCleanFlavorText(
-          speciesData.flavor_text_entries
-            ?.find(
-              (entry) =>
-                entry.language.name === "en" &&
-                entry.version.name === "legends-arceus"
-            )
-            ?.flavor_text.replace(/\f/g, " ") || ""
-        );
-      } else if (name.includes("-paldea")) {
-        setCleanFlavorText(
-          speciesData.flavor_text_entries
-            ?.find(
-              (entry) =>
-                entry.language.name === "en" && entry.version.name === "paldea"
-            )
-            ?.flavor_text.replace(/\f/g, " ") || ""
-        );
-      } else {
-        setCleanFlavorText(
-          speciesData.flavor_text_entries
-            ?.find((entry) => entry.language.name === "en")
-            ?.flavor_text.replace(/\f/g, " ") || ""
-        );
-      }
+    if (!pokemonData || !speciesData || !spriteShown?.id) return;
+
+    const isStandard = spriteShown.id >= 1 && spriteShown.id <= 1024;
+    const varietyData = isStandard
+      ? null
+      : pokemonVarieties.find((v) => v.id === spriteShown.id);
+    const selectedName = isStandard
+      ? pokemonData.name
+      : varietyData?.name || "";
+
+    const sprite = isStandard
+      ? pokemonData?.sprites?.other?.home
+      : varietyData?.sprites?.other?.home || null;
+
+    setSpriteBase(sprite);
+
+    // Flavor text
+    const entries = speciesData.flavor_text_entries || [];
+    const versionName = selectedName.includes("-alola")
+      ? "ultra-sun"
+      : selectedName.includes("-galar")
+      ? "sword"
+      : selectedName.includes("-hisui")
+      ? "legends-arceus"
+      : selectedName.includes("-paldea")
+      ? "scarlet"
+      : null;
+
+    const flavor = versionName
+      ? entries.find(
+          (entry) =>
+            entry.language.name === "en" && entry.version.name === versionName
+        )
+      : entries.find((entry) => entry.language.name === "en");
+
+    setCleanFlavorText(flavor?.flavor_text.replace(/\f/g, " ") || "");
+
+    // Colores
+    if (sprite?.front_default) {
+      Vibrant.from(sprite.front_default)
+        .getPalette()
+        .then((palette) => {
+          const vibrant = palette.Vibrant?.hex || "#000";
+          const muted = palette.Muted?.hex || "#fff";
+          const contrastText = getContrastText(vibrant);
+          setTextColor(contrastText > 0.5 ? "text-black" : "text-white");
+          setColor1(vibrant);
+          setColor2(muted);
+        })
+        .catch((err) => console.error("Vibrant error:", err));
     }
-  }, [speciesData]);
+
+    const data = isStandard ? pokemonData : varietyData;
+    setTypes(data?.types?.map((t) => t.type.name) || []);
+    setHeight((data?.height || 0) / 10);
+    setWeight((data?.weight || 0) / 10);
+  }, [spriteShown, pokemonData, speciesData, pokemonVarieties]);
 
   if (loading)
     return (
-      <div className={`bg-pokemon-black h-full flex justify-center items-center fixed top-0 left-0 w-full`}>
-      </div>
+      <div className="bg-pokemon-black h-full fixed w-full top-0 left-0 flex justify-center items-center" />
     );
+
   if (error) return <p className="bg-red-500">Error: {error.message}</p>;
+
   if (!pokemonData || !speciesData) return null;
 
   const genera =
     speciesData.genera?.find((g) => g.language.name === "en")?.genus ||
     "Pokémon";
-  const types = pokemonData.types.map((type) => type.type.name);
-  const height = pokemonData.height / 10;
-  const weight = pokemonData.weight / 10;
 
   return (
     <>
@@ -211,7 +202,6 @@ function PokemonDetails({ className = "" }) {
           onClick={() => {
             const prevId = pokemonSelected - 1;
             if (prevId >= 1) {
-              setPokemonSelected(prevId);
               navigate(`/pokedex/${prevId}`);
             }
           }}
@@ -253,18 +243,13 @@ function PokemonDetails({ className = "" }) {
             </div>
           </div>
 
-          <div className={`relative`}>
+          {spriteBase?.[spriteShown?.value] && (
             <img
-              src={`${pokemonData.sprites.other.home[spriteShown]}`}
+              src={spriteBase[spriteShown.value]}
               alt={pokemonData.name}
-              className={`max-w-48 max-h-48 object-contain ${styles.silueta} `}
+              className={`max-w-48 max-h-48 object-contain ${styles.silueta}`}
             />
-            {/* <img
-              src={`${pokemonData.sprites.other.showdown[spriteShown]}`}
-              alt={pokemonData.name}
-              className={`max-w-12 max-h-12 object-contain ${styles.silueta} absolute bottom-0 left-4`}
-            /> */}
-          </div>
+          )}
         </div>
 
         <button
@@ -273,7 +258,6 @@ function PokemonDetails({ className = "" }) {
           onClick={() => {
             const nextId = pokemonSelected + 1;
             if (nextId <= 1025) {
-              setPokemonSelected(nextId);
               navigate(`/pokedex/${nextId}`);
             }
           }}

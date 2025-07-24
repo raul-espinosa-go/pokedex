@@ -5,29 +5,26 @@ import {
 } from "@/services/pokeapi.service";
 import usePokedexStore from "@/store/usePokedexStore.js";
 
-function usePokemon() {
-  const pokemonSelected = usePokedexStore((state) => state.pokemonSelected);
-  const loading = usePokedexStore((state) => state.loading);
+function usePokemon(pokemonId) {
   const setLoading = usePokedexStore((state) => state.setLoading);
-
-  const pokemonData = usePokedexStore((state) => state.pokemonData);
   const setPokemonData = usePokedexStore((state) => state.setPokemonData);
-  const speciesData = usePokedexStore((state) => state.speciesData);
   const setSpeciesData = usePokedexStore((state) => state.setSpeciesData);
-  const pokemonVarieties = usePokedexStore((state) => state.pokemonVarieties);
-  const setPokemonVarieties = usePokedexStore((state) => state.setPokemonVarieties);
+  const setPokemonVarieties = usePokedexStore(
+    (state) => state.setPokemonVarieties
+  );
+  const pokemonData = usePokedexStore((state) => state.pokemonData);
 
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!pokemonSelected) return;
+    if (!pokemonId) return;
 
-    const fetchPokemonData = async () => {
+    const fetchData = async () => {
       setLoading(true);
       setError(null);
       try {
-        const pokemon = await getPokemonById(pokemonSelected);
-        let species = await getPokemonSpeciesById(pokemonSelected);
+        const pokemon = await getPokemonById(pokemonId);
+        const species = await getPokemonSpeciesById(pokemonId);
 
         const notPermittedVarieties = [
           "mega",
@@ -43,8 +40,8 @@ function usePokemon() {
 
         let results = [];
 
-        if (species.varieties && species.varieties.length > 1) {
-          const filteredVarieties = species.varieties.filter(
+        if (species.varieties?.length > 1) {
+          const filtered = species.varieties.filter(
             (v) =>
               !v.is_default &&
               !notPermittedVarieties.some((name) =>
@@ -52,22 +49,36 @@ function usePokemon() {
               )
           );
 
-          const fetchedVarieties = await Promise.all(
-            filteredVarieties.map(async (v) => {
+          const fetched = await Promise.all(
+            filtered.map(async (v) => {
               const match = v.pokemon.url.match(/\/pokemon\/(\d+)\//);
               const id = match ? parseInt(match[1], 10) : null;
               if (!id) return null;
 
               try {
-                return await getPokemonById(id);
-              } catch (e) {
-                console.warn(`Error al obtener variedad ${id}:`, e);
+                const varietyData = await getPokemonById(id);
+
+                if (v.pokemon.name.includes("-female")) {
+                  const femaleSprites = varietyData.sprites?.other?.home;
+                  if (femaleSprites?.front_default) {
+                    pokemon.sprites.other.home.front_female =
+                      femaleSprites.front_default;
+                  }
+                  if (femaleSprites?.front_shiny) {
+                    pokemon.sprites.other.home.front_shiny_female =
+                      femaleSprites.front_shiny;
+                  }
+                  return null;
+                }
+
+                return varietyData;
+              } catch {
                 return null;
               }
             })
           );
 
-          results = fetchedVarieties.filter(Boolean);
+          results = fetched.filter(Boolean);
         }
 
         setPokemonData(pokemon);
@@ -80,14 +91,12 @@ function usePokemon() {
       }
     };
 
-    // Fetch si no hay datos o si el ID ha cambiado
-    if (!pokemonData || pokemonData.id !== pokemonSelected) {
-      fetchPokemonData();
-    }
-  }, [pokemonSelected]);
+    // ¡SIEMPRE hacer fetch en primera carga o si cambia!
+    fetchData();
+  }, [pokemonId]);
 
   return {
-    loading,
+    loading: usePokedexStore((state) => state.loading),
     error,
   };
 }
