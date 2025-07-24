@@ -183,8 +183,7 @@ function PokemonDetails({ className = "" }) {
 
   if (loading)
     return (
-      <div className={className}>
-        <p>Loading...</p>
+      <div className={`bg-pokemon-black h-full flex justify-center items-center fixed top-0 left-0 w-full`}>
       </div>
     );
   if (error) return <p className="bg-red-500">Error: {error.message}</p>;
