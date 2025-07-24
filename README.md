@@ -6,7 +6,8 @@ This is my version of the Pokémon National Pokédex, heavily inspired by the Po
 
 This project was built using Vite, React, Tailwind, and GSAP. It helped me strengthen my skills with these technologies and get started with GSAP.
 
-## Planned updates and features
+## Roadmap
+- Add roadmap/to-do-list page.
 - Improved design for desktop browsers.
 - More Pokémon forms to be added (e.g., Furfrou hairstyles, Flabébé colors).
 - And many more to come...
