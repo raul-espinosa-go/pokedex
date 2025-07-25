@@ -56,7 +56,6 @@ function usePokemon(pokemonId) {
 
               try {
                 const varietyData = await getPokemonById(id);
-                console.log(varietyData);
 
                 if(!varietyData.sprites?.other?.home.front_default) return;
 
