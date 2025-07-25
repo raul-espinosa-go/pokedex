@@ -154,8 +154,8 @@ function PokemonDetails({ className = "" }) {
     setCleanFlavorText(flavor?.flavor_text.replace(/\f/g, " ") || "");
 
     // Colores
-    if (sprite?.front_default) {
-      Vibrant.from(sprite.front_default)
+    if (spriteBase && spriteShown) {
+      Vibrant.from(spriteBase[spriteShown.value])
         .getPalette()
         .then((palette) => {
           const vibrant = palette.Vibrant?.hex || "#000";
@@ -211,11 +211,15 @@ function PokemonDetails({ className = "" }) {
 
         <div className="flex flex-row items-center justify-between gap-4 p-4 lg:px-16 ml-4 w-full">
           <div className={`${textColor}`}>
-            <h2 className={`text-base md:text-base lg:text-2xl`}>No. {speciesData.id}</h2>
+            <h2 className={`text-base md:text-base lg:text-2xl`}>
+              No. {speciesData.id}
+            </h2>
             <h1 className="md:text-3xl lg:text-6xl font-bold capitalize">
               {speciesData.name}
             </h1>
-            <h2 className="text-base md:text-base lg:text-2xl mb-2">{genera}</h2>
+            <h2 className="text-base md:text-base lg:text-2xl mb-2">
+              {genera}
+            </h2>
 
             <div className="flex items-center gap-2 mb-8">
               {types.map((type) => (
@@ -228,12 +232,16 @@ function PokemonDetails({ className = "" }) {
                     alt={type}
                     className="md:w-6 md:h-6 lg:w-8 lg:h-8 mr-1"
                   />
-                  <span className="uppercase md:text-base lg:text-2xl">{type}</span>
+                  <span className="uppercase md:text-base lg:text-2xl">
+                    {type}
+                  </span>
                 </div>
               ))}
             </div>
 
-            <p className="text-base md:text-base lg:text-2xl">{cleanFlavorText}</p>
+            <p className="text-base md:text-base lg:text-2xl">
+              {cleanFlavorText}
+            </p>
 
             <div className="flex flex-row items-center gap-2 mt-2 md:text-base lg:text-2xl">
               <span className="font-bold">Height:</span>
