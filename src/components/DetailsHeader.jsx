@@ -181,11 +181,11 @@ function DetailsHeader({ className }) {
         <div ref={triggerRef2} className="relative variety-menu-trigger w-fit">
           {pokemonVarieties.length > 0 && (
             <button
-              className="chip px-2 md:min-w-32 w-fit justify-start cursor-pointer lg:px-4 lg:py-2"
+              className="chip px-2 md:min-w-32 w-fit cursor-pointer lg:px-4 lg:py-2"
               onClick={() => setShowVarietyOptions((prev) => !prev)}
             >
               <ChevronsDown className="text-base md:text-base lg:text-2xl" />
-              <span className="text-base capitalize whitespace-nowrap text-base md:text-base lg:text-xl">
+              <span className="capitalize whitespace-nowrap text-base md:text-base lg:text-xl">
                 {
                   varietyButtons.find((btn) => btn.value === varietySelected)
                     ?.label
@@ -225,7 +225,7 @@ function DetailsHeader({ className }) {
         >
           <div className="relative">
             <button
-              className="chip cursor-pointer w-18 lg:w-fit lg:min-w-32 justify-start p-1 px-2 md:px-4 lg:px-6 lg:py-2"
+              className="chip cursor-pointer items-center justify-center w-18 lg:w-fit lg:min-w-32 p-1 px-2 md:px-4 lg:px-6 lg:py-2"
               onClick={() => setGenderOptions((prev) => !prev)}
             >
               {genderButtons.find((btn) => btn.value === spriteValue)?.icon ||
