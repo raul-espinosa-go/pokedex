@@ -76,9 +76,7 @@ const typeIcons = {
 function PokemonDetails({ className = "" }) {
   const loading = usePokedexStore((state) => state.loading);
   const pokemonSelected = usePokedexStore((state) => state.pokemonSelected);
-  const setPokemonSelected = usePokedexStore(
-    (state) => state.setPokemonSelected
-  );
+  const setPokemonSelected = usePokedexStore((state) => state.setPokemonSelected);
   const pokemonData = usePokedexStore((state) => state.pokemonData);
   const speciesData = usePokedexStore((state) => state.speciesData);
   const pokemonVarieties = usePokedexStore((state) => state.pokemonVarieties);
@@ -86,9 +84,9 @@ function PokemonDetails({ className = "" }) {
   const setSpriteShown = usePokedexStore((state) => state.setSpriteShown);
 
   const [spriteBase, setSpriteBase] = useState(null);
-  const [color1, setColor1] = useState("#ffffff");
-  const [color2, setColor2] = useState("#ffffff");
-  const [textColor, setTextColor] = useState("text-white");
+  const [color1, setColor1] = useState("#1A4883");
+  const [color2, setColor2] = useState("#20789E");
+  const [textColor, setTextColor] = useState("text-black");
   const [cleanFlavorText, setCleanFlavorText] = useState("");
   const [types, setTypes] = useState([]);
   const [height, setHeight] = useState(null);
@@ -96,43 +94,28 @@ function PokemonDetails({ className = "" }) {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const numberLocation = parseInt(
-    location.pathname.split("/pokedex/").pop(),
-    10
-  );
+  const numberLocation = parseInt(location.pathname.split("/pokedex/").pop(), 10);
+  const { error } = usePokemon(numberLocation);
 
-  const { error } = usePokemon(numberLocation); // Se activa automáticamente si pokemonSelected está definido
-
-  // Establecer el ID inicial al montar o cambiar la URL
   useEffect(() => {
     setPokemonSelected(numberLocation);
   }, [numberLocation]);
 
-  // Resetear sprites al cambiar el Pokémon seleccionado
   useEffect(() => {
-    setSpriteBase(null);
-    setSpriteShown({ id: null, value: null });
+    setSpriteBase(pokemonData?.sprites?.other?.home);
+    setSpriteShown({ id: pokemonSelected, value: "front_default" });
   }, [pokemonSelected]);
 
-  // Establecer datos base y colores cuando llegan los datos
   useEffect(() => {
     if (!pokemonData || !speciesData || !spriteShown?.id) return;
 
     const isStandard = spriteShown.id >= 1 && spriteShown.id <= 1024;
-    const varietyData = isStandard
-      ? null
-      : pokemonVarieties.find((v) => v.id === spriteShown.id);
-    const selectedName = isStandard
-      ? pokemonData.name
-      : varietyData?.name || "";
-
-    const sprite = isStandard
-      ? pokemonData?.sprites?.other?.home
-      : varietyData?.sprites?.other?.home || null;
+    const varietyData = isStandard ? null : pokemonVarieties.find((v) => v.id === spriteShown.id);
+    const selectedName = isStandard ? pokemonData.name : varietyData?.name || "";
+    const sprite = isStandard ? pokemonData?.sprites?.other?.home : varietyData?.sprites?.other?.home || null;
 
     setSpriteBase(sprite);
 
-    // Flavor text
     const entries = speciesData.flavor_text_entries || [];
     const versionName = selectedName.includes("-alola")
       ? "ultra-sun"
@@ -145,17 +128,26 @@ function PokemonDetails({ className = "" }) {
       : null;
 
     const flavor = versionName
-      ? entries.find(
-          (entry) =>
-            entry.language.name === "en" && entry.version.name === versionName
-        )
+      ? entries.find((entry) => entry.language.name === "en" && entry.version.name === versionName)
       : entries.find((entry) => entry.language.name === "en");
 
     setCleanFlavorText(flavor?.flavor_text.replace(/\f/g, " ") || "");
 
-    // Colores
-    if (spriteBase && spriteShown) {
-      Vibrant.from(spriteBase[spriteShown.value])
+    const data = isStandard ? pokemonData : varietyData;
+    setTypes(data?.types?.map((t) => t.type.name) || []);
+    setHeight((data?.height || 0) / 10);
+    setWeight((data?.weight || 0) / 10);
+  }, [spriteShown, pokemonData, speciesData, pokemonVarieties]);
+
+  useEffect(() => {
+    if (!spriteBase || !spriteShown?.value || !spriteBase[spriteShown.value]) return;
+
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = spriteBase[spriteShown.value];
+
+    img.onload = () => {
+      Vibrant.from(img)
         .getPalette()
         .then((palette) => {
           const vibrant = palette.Vibrant?.hex || "#000";
@@ -166,13 +158,8 @@ function PokemonDetails({ className = "" }) {
           setColor2(muted);
         })
         .catch((err) => console.error("Vibrant error:", err));
-    }
-
-    const data = isStandard ? pokemonData : varietyData;
-    setTypes(data?.types?.map((t) => t.type.name) || []);
-    setHeight((data?.height || 0) / 10);
-    setWeight((data?.weight || 0) / 10);
-  }, [spriteShown, pokemonData, speciesData, pokemonVarieties]);
+    };
+  }, [spriteBase, spriteShown]);
 
   if (loading)
     return (
@@ -184,17 +171,14 @@ function PokemonDetails({ className = "" }) {
   if (!pokemonData || !speciesData) return null;
 
   const genera =
-    speciesData.genera?.find((g) => g.language.name === "en")?.genus ||
-    "Pokémon";
+    speciesData.genera?.find((g) => g.language.name === "en")?.genus || "Pokémon";
 
   return (
     <>
       <DetailsHeader className="w-full fixed top-0" />
       <div
-        className={`${className} overflow-hidden h-full flex flex-row justify-center items-center px-2 `}
-        style={{
-          background: `linear-gradient(to bottom, ${color1}, ${color2})`,
-        }}
+        className={`${className} overflow-hidden h-full flex flex-row justify-center items-center px-2`}
+        style={{ background: `linear-gradient(to bottom, ${color1}, ${color2})` }}
       >
         <button
           className="chip h-1/2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
@@ -211,15 +195,9 @@ function PokemonDetails({ className = "" }) {
 
         <div className="flex flex-row items-center justify-between gap-4 p-4 lg:px-16 ml-4 w-full">
           <div className={`${textColor}`}>
-            <h2 className={`text-base md:text-base lg:text-2xl`}>
-              No. {speciesData.id}
-            </h2>
-            <h1 className="md:text-3xl lg:text-6xl font-bold capitalize">
-              {speciesData.name}
-            </h1>
-            <h2 className="text-base md:text-base lg:text-2xl mb-2">
-              {genera}
-            </h2>
+            <h2 className={`text-base md:text-base lg:text-2xl`}>No. {speciesData.id}</h2>
+            <h1 className="md:text-3xl lg:text-6xl font-bold capitalize">{speciesData.name}</h1>
+            <h2 className="text-base md:text-base lg:text-2xl mb-2">{genera}</h2>
 
             <div className="flex items-center gap-2 mb-8">
               {types.map((type) => (
@@ -232,16 +210,12 @@ function PokemonDetails({ className = "" }) {
                     alt={type}
                     className="md:w-6 md:h-6 lg:w-8 lg:h-8 mr-1"
                   />
-                  <span className="uppercase md:text-base lg:text-2xl">
-                    {type}
-                  </span>
+                  <span className="uppercase md:text-base lg:text-2xl">{type}</span>
                 </div>
               ))}
             </div>
 
-            <p className="text-base md:text-base lg:text-2xl">
-              {cleanFlavorText}
-            </p>
+            <p className="text-base md:text-base lg:text-2xl">{cleanFlavorText}</p>
 
             <div className="flex flex-row items-center gap-2 mt-2 md:text-base lg:text-2xl">
               <span className="font-bold">Height:</span>
