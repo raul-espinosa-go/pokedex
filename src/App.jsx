@@ -1,4 +1,5 @@
 import { Route, Routes, useLocation } from "react-router-dom";
+import { Analytics } from '@vercel/analytics/react';
 import { useEffect, useState } from "react";
 
 // Pages
@@ -44,6 +45,7 @@ function App() {
       {showLoader && (
         <Loader onComplete={() => setShowLoader(false)} show={loading} />
       )}
+      <Analytics />
     </main>
   );
 }
